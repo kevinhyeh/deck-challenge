@@ -1,0 +1,1 @@
+INSERT INTO workouts (workout) VALUES ('Pushups'), ('Situps'), ('Jumping Jacks'), ('Body Squats'), ('Lunges'), ('Leg Raises');

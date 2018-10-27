@@ -12,7 +12,8 @@ class WorkoutScreen extends Component {
       selectDifficulty: '',
       selectNumber: '',
       selectWorkouts: '',
-      initialWorkouts: []
+      initialWorkouts: [],
+      chosenWorkouts: []
     }
   }
 
@@ -28,6 +29,12 @@ class WorkoutScreen extends Component {
     this.setState({ selectNumber: num })
   }
 
+  unclickWorkout = (workout) => {
+    let workoutIndex = this.state.chosenWorkouts.indexOf(workout);
+    this.state.chosenWorkouts.splice(workoutIndex, 1);
+    this.forceUpdate();
+  }
+
   render() {
     const { selectDifficulty, selectNumber, selectWorkouts } = this.state;
 
@@ -39,11 +46,18 @@ class WorkoutScreen extends Component {
     const fourWorkouts = selectNumber == '4';
     const numberClicked = selectNumber.length > 0;
 
-    const inactiveWorkoutBut = this.state.initialWorkouts.map(workout => (
-        <TouchableOpacity key={workout.id} style={styles.inactiveBut} onPress={() => this.test()}>
-            <Text>{workout.workout}</Text>
+    const inactiveWorkoutBut = this.state.initialWorkouts.map(workout => {
+
+      if (this.state.chosenWorkouts.indexOf(workout.workout) > -1) {
+        return <TouchableOpacity key={workout.id} style={styles.activeBut} onPress={() => this.unclickWorkout(workout.workout)}>
+            <Text>{workout.workout}</Text>            
         </TouchableOpacity>
-      ));
+      } else {
+        return <TouchableOpacity key={workout.id} style={styles.inactiveBut} onPress={() => this.setState({ chosenWorkouts: [...this.state.chosenWorkouts, workout.workout]})}>
+            <Text>{workout.workout}</Text>            
+        </TouchableOpacity>
+      }
+      });
 
     return (
       <SafeAreaView style={styles.workoutContainer}>
@@ -95,6 +109,7 @@ class WorkoutScreen extends Component {
         { numberClicked ? 
           <View style={styles.workouts}>
           {inactiveWorkoutBut}
+          {console.log(this.state.chosenWorkouts)}
           </View>
           : <View></View>
         }

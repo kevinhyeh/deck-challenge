@@ -12,26 +12,20 @@ class WorkoutScreen extends Component {
       selectDifficulty: '',
       selectNumber: '',
       selectWorkouts: '',
-      initialWorkouts: [
-      {id: 1, workout: 'Pushups'}, 
-      {id: 2, workout: 'Situps'}, 
-      {id: 3, workout: 'Jumping Jacks'}, 
-      {id: 4, workout: 'Body Squats'}, 
-      {id: 5, workout: 'Lunges'}, 
-      {id: 6, workout: 'Leg Raises'}
-      ]
+      initialWorkouts: []
     }
   }
 
-  loadWorkouts = () => {
+  getWorkouts = () => {
     fetch('http://192.168.1.72:3001/workouts', {
       method: 'POST'
     }).then(res => res.json())
     .then(resultingJSON => this.setState({ initialWorkouts : resultingJSON }))
   };
 
-  update = (set) => {
-    this.setState( set )
+  loadWorkouts = (num) => {
+    this.getWorkouts();
+    this.setState({ selectNumber: num })
   }
 
   render() {
@@ -59,7 +53,7 @@ class WorkoutScreen extends Component {
             <Text>Easy</Text>
           </TouchableOpacity>  
           ) : (
-          <TouchableOpacity style={styles.inactiveBut} onPress={() => this.update({ selectDifficulty: 'easy' })}>
+          <TouchableOpacity style={styles.inactiveBut} onPress={ selectDifficulty => this.setState({ selectDifficulty: 'easy' }) }>
             <Text>Easy</Text>
           </TouchableOpacity>
           )
@@ -69,7 +63,7 @@ class WorkoutScreen extends Component {
             <Text>Hard</Text>
           </TouchableOpacity>  
           ) : (
-          <TouchableOpacity style={styles.inactiveBut} onPress={() => this.update({ selectDifficulty: 'hard' })}>
+          <TouchableOpacity style={styles.inactiveBut} onPress={ selectDifficulty => this.setState({ selectDifficulty: 'hard' }) }>
             <Text>Hard</Text>
           </TouchableOpacity>
           )
@@ -82,7 +76,7 @@ class WorkoutScreen extends Component {
                 <Text>2</Text>
                </TouchableOpacity>
               ) : (
-              <TouchableOpacity style={styles.inactiveBut} onPress={() => this.update({ selectNumber: '2' })}>
+              <TouchableOpacity style={styles.inactiveBut} onPress={() => this.loadWorkouts('2')}>
                 <Text>2</Text>
               </TouchableOpacity>
             )};
@@ -91,7 +85,7 @@ class WorkoutScreen extends Component {
                 <Text>4</Text>
                </TouchableOpacity>
               ) : (
-              <TouchableOpacity style={styles.inactiveBut} onPress={() => this.update({ selectNumber: '4' })}>
+              <TouchableOpacity style={styles.inactiveBut} onPress={() => this.loadWorkouts('4')}>
                 <Text>4</Text>
               </TouchableOpacity>
             )};

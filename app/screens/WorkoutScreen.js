@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, TouchableOpacity, Image, TextInput, Button, SafeAreaView } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, Image, TextInput, Button, SafeAreaView, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 import styles from '../styles/WorkoutStyles';
@@ -10,111 +10,151 @@ class WorkoutScreen extends Component {
     super(props);
     this.state = {
       selectDifficulty: '',
-      selectNumber: '',
+      selectNumber: -1,
       selectWorkouts: '',
       initialWorkouts: [],
-      chosenWorkouts: []
+      chosenWorkouts: [],
+      addWorkout: ''
     }
-  }
+  };
 
-  getWorkouts = () => {
+  fetchWorkouts = () => {
     fetch('http://192.168.1.72:3001/workouts', {
       method: 'POST'
     }).then(res => res.json())
     .then(resultingJSON => this.setState({ initialWorkouts : resultingJSON }))
   };
 
+  fetchAddWorkout = () => {
+    if (this.state.addWorkout != '') {
+      fetch('http://192.168.1.72:3001/add', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          workout: this.state.addWorkout
+        })
+      }).then(res => res.json())
+    } else {
+      Alert.alert('Enter a workout');
+    };
+  };
+
   loadWorkouts = (num) => {
-    this.getWorkouts();
+    this.fetchWorkouts();
     this.setState({ selectNumber: num })
-  }
+  };
 
   unclickWorkout = (workout) => {
     let workoutIndex = this.state.chosenWorkouts.indexOf(workout);
     this.state.chosenWorkouts.splice(workoutIndex, 1);
     this.forceUpdate();
-  }
+  };
 
   render() {
-    const { selectDifficulty, selectNumber, selectWorkouts } = this.state;
+    const { selectDifficulty, selectNumber, selectWorkouts, chosenWorkouts } = this.state;
 
     const difficultyEasy = selectDifficulty == 'easy';
     const difficultyHard = selectDifficulty == 'hard';
     const difficultyClicked = selectDifficulty.length > 0;
 
-    const twoWorkouts = selectNumber == '2';
-    const fourWorkouts = selectNumber == '4';
-    const numberClicked = selectNumber.length > 0;
+    const twoWorkouts = selectNumber === 2;
+    const fourWorkouts = selectNumber === 4;
+    const numberClicked = selectNumber > 0;
 
-    const inactiveWorkoutBut = this.state.initialWorkouts.map(workout => {
+    const workoutsSelected = chosenWorkouts.length == selectNumber;
 
+    const workoutList = this.state.initialWorkouts.map(workout => {
       if (this.state.chosenWorkouts.indexOf(workout.workout) > -1) {
-        return <TouchableOpacity key={workout.id} style={styles.activeBut} onPress={() => this.unclickWorkout(workout.workout)}>
+        return <TouchableOpacity key={workout.id} style={styles.activeWorkoutBut} onPress={() => this.unclickWorkout(workout.workout)}>
             <Text>{workout.workout}</Text>            
         </TouchableOpacity>
       } else {
-        return <TouchableOpacity key={workout.id} style={styles.inactiveBut} onPress={() => this.setState({ chosenWorkouts: [...this.state.chosenWorkouts, workout.workout]})}>
+        if (this.state.chosenWorkouts.length == this.state.selectNumber) {
+          return <TouchableOpacity key={workout.id} style={styles.inactiveWorkoutBut}>
             <Text>{workout.workout}</Text>            
-        </TouchableOpacity>
+          </TouchableOpacity>
+        } else {
+          return <TouchableOpacity key={workout.id} style={styles.inactiveWorkoutBut} onPress={() => this.setState({ chosenWorkouts: [...this.state.chosenWorkouts, workout.workout]})}>
+            <Text>{workout.workout}</Text>            
+          </TouchableOpacity>
+        } 
       }
-      });
+    });
 
     return (
       <SafeAreaView style={styles.workoutContainer}>
-        <View style={styles.rowContainer}>
-        { difficultyEasy ? (
-          <TouchableOpacity style={styles.activeBut}>
-            <Text>Easy</Text>
-          </TouchableOpacity>  
-          ) : (
-          <TouchableOpacity style={styles.inactiveBut} onPress={ selectDifficulty => this.setState({ selectDifficulty: 'easy' }) }>
-            <Text>Easy</Text>
-          </TouchableOpacity>
-          )
-        }        
-        { difficultyHard ? (
-          <TouchableOpacity style={styles.activeBut}>
-            <Text>Hard</Text>
-          </TouchableOpacity>  
-          ) : (
-          <TouchableOpacity style={styles.inactiveBut} onPress={ selectDifficulty => this.setState({ selectDifficulty: 'hard' }) }>
-            <Text>Hard</Text>
-          </TouchableOpacity>
-          )
-        }
+        <View style={styles.section}>
+          <Text style={styles.header}>1. Select Difficulty</Text>
+          <View style={styles.rowContainer}>
+          { difficultyEasy ? (
+            <TouchableOpacity style={styles.activeBut}>
+              <Text>Easy</Text>
+            </TouchableOpacity>  
+            ) : (
+            <TouchableOpacity style={styles.inactiveBut} onPress={ selectDifficulty => this.setState({ selectDifficulty: 'easy' }) }>
+              <Text>Easy</Text>
+            </TouchableOpacity>
+            )
+          }        
+          { difficultyHard ? (
+            <TouchableOpacity style={styles.activeBut}>
+              <Text>Hard</Text>
+            </TouchableOpacity>  
+            ) : (
+            <TouchableOpacity style={styles.inactiveBut} onPress={ selectDifficulty => this.setState({ selectDifficulty: 'hard' }) }>
+              <Text>Hard</Text>
+            </TouchableOpacity>
+            )
+          }
+          </View>
         </View>
         { difficultyClicked ? (
-          <View style={styles.rowContainer}>
-            {twoWorkouts ? (
-              <TouchableOpacity style={styles.activeBut}>
-                <Text>2</Text>
-               </TouchableOpacity>
-              ) : (
-              <TouchableOpacity style={styles.inactiveBut} onPress={() => this.loadWorkouts('2')}>
-                <Text>2</Text>
-              </TouchableOpacity>
-            )};
-            {fourWorkouts ? (
-              <TouchableOpacity style={styles.activeBut}>
-                <Text>4</Text>
-               </TouchableOpacity>
-              ) : (
-              <TouchableOpacity style={styles.inactiveBut} onPress={() => this.loadWorkouts('4')}>
-                <Text>4</Text>
-              </TouchableOpacity>
-            )};
+          <View style={styles.section}>
+            <Text style={styles.header}>2. Select number of workouts</Text>
+            <View style={styles.rowContainer}>
+              {twoWorkouts ? (
+                <TouchableOpacity style={styles.activeBut}>
+                  <Text>2</Text>
+                 </TouchableOpacity>
+                ) : (
+                <TouchableOpacity style={styles.inactiveBut} onPress={() => this.loadWorkouts(2)}>
+                  <Text>2</Text>
+                </TouchableOpacity>
+              )};
+              {fourWorkouts ? (
+                <TouchableOpacity style={styles.activeBut}>
+                  <Text>4</Text>
+                 </TouchableOpacity>
+                ) : (
+                <TouchableOpacity style={styles.inactiveBut} onPress={() => this.loadWorkouts(4)}>
+                  <Text>4</Text>
+                </TouchableOpacity>
+              )};
+            </View>
           </View>
         ) : <View></View>
         };
-        { numberClicked ? 
-          <View style={styles.workouts}>
-          {inactiveWorkoutBut}
-          {console.log(this.state.chosenWorkouts)}
+        { numberClicked ? (
+          <View style={styles.section}>
+            <Text style={styles.header}>3. Select Your Workouts</Text>
+            <View style={styles.workouts}>
+            {workoutList}
+            </View>
           </View>
-          : <View></View>
+        ) : <View></View>
+        }
+        { workoutsSelected ? (
+          <View style={styles.section}>
+            <TouchableOpacity style={styles.shuffleBut}>
+              <Text style={styles.shuffleText}>Shuffle Deck</Text>
+            </TouchableOpacity>
+          </View>
+          ) : <View></View>
         }
       </SafeAreaView>
-
     );
   }
 }

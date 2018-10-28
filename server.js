@@ -19,7 +19,7 @@ connection.connect((err) => {
 });
 
 app.get('/users', (req, res) => {
-  connection.query('SELECT * FROM users', function(err, results) {
+  connection.query('SELECT * FROM users', (err, results) => {
     if (err) throw err;
     console.log(results);
   });
@@ -35,7 +35,14 @@ app.post('/signup', (req, res) => {
 });
 
 app.post('/workouts', (req, res) => {
-  connection.query("SELECT * FROM workouts", function(err, data) {
+  connection.query("SELECT * FROM workouts", (err, data) => {
+    res.json(data);
+  });
+});
+
+app.post('/add', (req, res) => {
+  console.log(req.body.workout);
+  connection.query("INSERT INTO workouts (workout) VALUES (?)", req.body.workout, (err, data) => {
     res.json(data);
   });
 });

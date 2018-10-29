@@ -18,6 +18,8 @@ const workoutStyles = StyleSheet.create({
     flexWrap: 'wrap',
     alignItems: 'flex-start',
     flexDirection: 'row',
+    justifyContent: 'center',
+    width: '70%'
   },
   inactiveBut: {
     width: 100,
@@ -69,7 +71,7 @@ const workoutStyles = StyleSheet.create({
     fontSize: 20
   },
   shuffleBut: {
-    padding: 10,
+    padding: 12,
     backgroundColor: '#59cbbd',
     borderRadius: 50,
     marginTop: 20
@@ -77,6 +79,15 @@ const workoutStyles = StyleSheet.create({
   shuffleText: {
     fontSize: 20,
     color: 'white'
+  },
+  test: {
+    backgroundColor: 'rgba(255,255,255,0.5)',
+    flex: 1,
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 50,
+    marginBottom: 90,
+    borderRadius: 30
   }
 });
 

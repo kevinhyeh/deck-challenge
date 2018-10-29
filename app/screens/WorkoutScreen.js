@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, TouchableOpacity, Image, TextInput, Button, SafeAreaView, Alert } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, Image, TextInput, Button, SafeAreaView, Alert, Modal } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 import styles from '../styles/WorkoutStyles';
@@ -14,7 +14,8 @@ class WorkoutScreen extends Component {
       selectWorkouts: '',
       initialWorkouts: [],
       chosenWorkouts: [],
-      addWorkout: ''
+      addWorkout: '',
+      modalVisibility: false
     }
   };
 
@@ -53,6 +54,10 @@ class WorkoutScreen extends Component {
     this.forceUpdate();
   };
 
+  setModalVisibility = (visible) => {
+    this.setState({ modalVisibility: visible })
+  }
+
   render() {
     const { selectDifficulty, selectNumber, selectWorkouts, chosenWorkouts } = this.state;
 
@@ -86,74 +91,81 @@ class WorkoutScreen extends Component {
 
     return (
       <SafeAreaView style={styles.workoutContainer}>
-        <View style={styles.section}>
-          <Text style={styles.header}>1. Select Difficulty</Text>
-          <View style={styles.rowContainer}>
-          { difficultyEasy ? (
-            <TouchableOpacity style={styles.activeBut}>
-              <Text>Easy</Text>
-            </TouchableOpacity>  
-            ) : (
-            <TouchableOpacity style={styles.inactiveBut} onPress={ selectDifficulty => this.setState({ selectDifficulty: 'easy' }) }>
-              <Text>Easy</Text>
-            </TouchableOpacity>
-            )
-          }        
-          { difficultyHard ? (
-            <TouchableOpacity style={styles.activeBut}>
-              <Text>Hard</Text>
-            </TouchableOpacity>  
-            ) : (
-            <TouchableOpacity style={styles.inactiveBut} onPress={ selectDifficulty => this.setState({ selectDifficulty: 'hard' }) }>
-              <Text>Hard</Text>
-            </TouchableOpacity>
-            )
-          }
-          </View>
-        </View>
-        { difficultyClicked ? (
+          <Modal visible={this.state.modalVisibility} transparent animationType={'fade'}>
+            <View style={styles.test}>
+              <TouchableOpacity onPress={() => this.setModalVisibility(false)}>
+                <Text>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
           <View style={styles.section}>
-            <Text style={styles.header}>2. Select number of workouts</Text>
+            <Text style={styles.header}>1. Select Difficulty</Text>
             <View style={styles.rowContainer}>
-              {twoWorkouts ? (
-                <TouchableOpacity style={styles.activeBut}>
-                  <Text>2</Text>
-                 </TouchableOpacity>
-                ) : (
-                <TouchableOpacity style={styles.inactiveBut} onPress={() => this.loadWorkouts(2)}>
-                  <Text>2</Text>
-                </TouchableOpacity>
-              )};
-              {fourWorkouts ? (
-                <TouchableOpacity style={styles.activeBut}>
-                  <Text>4</Text>
-                 </TouchableOpacity>
-                ) : (
-                <TouchableOpacity style={styles.inactiveBut} onPress={() => this.loadWorkouts(4)}>
-                  <Text>4</Text>
-                </TouchableOpacity>
-              )};
+            { difficultyEasy ? (
+              <TouchableOpacity style={styles.activeBut}>
+                <Text>Easy</Text>
+              </TouchableOpacity>  
+              ) : (
+              <TouchableOpacity style={styles.inactiveBut} onPress={ selectDifficulty => this.setState({ selectDifficulty: 'easy' }) }>
+                <Text>Easy</Text>
+              </TouchableOpacity>
+              )
+            }        
+            { difficultyHard ? (
+              <TouchableOpacity style={styles.activeBut}>
+                <Text>Hard</Text>
+              </TouchableOpacity>  
+              ) : (
+              <TouchableOpacity style={styles.inactiveBut} onPress={ selectDifficulty => this.setState({ selectDifficulty: 'hard' }) }>
+                <Text>Hard</Text>
+              </TouchableOpacity>
+              )
+            }
             </View>
           </View>
-        ) : <View></View>
-        };
-        { numberClicked ? (
-          <View style={styles.section}>
-            <Text style={styles.header}>3. Select Your Workouts</Text>
-            <View style={styles.workouts}>
-            {workoutList}
+          { difficultyClicked ? (
+            <View style={styles.section}>
+              <Text style={styles.header}>2. Select number of workouts</Text>
+              <View style={styles.rowContainer}>
+                {twoWorkouts ? (
+                  <TouchableOpacity style={styles.activeBut}>
+                    <Text>2</Text>
+                   </TouchableOpacity>
+                  ) : (
+                  <TouchableOpacity style={styles.inactiveBut} onPress={() => this.loadWorkouts(2)}>
+                    <Text>2</Text>
+                  </TouchableOpacity>
+                )};
+                {fourWorkouts ? (
+                  <TouchableOpacity style={styles.activeBut}>
+                    <Text>4</Text>
+                   </TouchableOpacity>
+                  ) : (
+                  <TouchableOpacity style={styles.inactiveBut} onPress={() => this.loadWorkouts(4)}>
+                    <Text>4</Text>
+                  </TouchableOpacity>
+                )};
+              </View>
             </View>
-          </View>
-        ) : <View></View>
-        }
-        { workoutsSelected ? (
-          <View style={styles.section}>
-            <TouchableOpacity style={styles.shuffleBut}>
-              <Text style={styles.shuffleText}>Shuffle Deck</Text>
-            </TouchableOpacity>
-          </View>
           ) : <View></View>
-        }
+          };
+          { numberClicked ? (
+            <View style={styles.section}>
+              <Text style={styles.header}>3. Select {this.state.selectNumber} Workouts</Text>
+              <View style={styles.workouts}>
+              {workoutList}
+              </View>
+            </View>
+          ) : <View></View>
+          }
+          { workoutsSelected ? (
+            <View style={styles.section}>
+              <TouchableOpacity style={styles.shuffleBut} onPress={() => this.setModalVisibility(true)}>
+                <Text style={styles.shuffleText}>Shuffle Deck</Text>
+              </TouchableOpacity>
+            </View>
+            ) : <View></View>
+          }
       </SafeAreaView>
     );
   }

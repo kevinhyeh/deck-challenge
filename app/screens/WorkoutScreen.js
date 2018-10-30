@@ -23,7 +23,8 @@ class WorkoutScreen extends Component {
       modalVisibility: false,
       shuffledDeck: [],
       secondsElapsed: 0,
-      lastClearedIncrementer: null
+      lastClearedIncrementer: null,
+      finishedCount: 0
     };
     this.incrementer = null;
   };
@@ -85,7 +86,7 @@ class WorkoutScreen extends Component {
 
   nextCard = () => {
     this.state.shuffledDeck.pop();
-    this.forceUpdate();
+    this.setState(prevState => ({ finishedCount: prevState.finishedCount + 1 }))
   };
 
   handleStartClick = () => {
@@ -149,17 +150,21 @@ class WorkoutScreen extends Component {
               { this.state.shuffledDeck.length > 0 ? 
                 <View style={{ alignItems: 'center' }}>
                   <View style={styles.workoutCards}>
-                    <Text>{this.state.shuffledDeck.length}/{this.state.selectDifficulty} </Text>
+                    <Text>{this.state.shuffledDeck.length}/{this.state.selectDifficulty}</Text>
                     <Text>{currentCard.face}({currentCard.value})
                     </Text>
                     { currentCard.color == 'red' ? 
                       <Text>{this.state.chosenWorkouts[0]}</Text>
                     : <Text>{this.state.chosenWorkouts[1]}</Text>
                     }
-                    {console.log(this.state.shuffledDeck)}
+                    {console.log(this.state.finishedCount)}
                   </View>
                   <Text style={{color: '#fff', fontSize: 24 }} onPress={() => this.nextCard()}>Next Card</Text>
                 </View>
+              : this.state.finishedCount == this.state.selectDifficulty ?
+                  <View style={styles.workoutCards}>
+                    <Text>You finished!</Text>
+                  </View>
               : <View>
                 <Image style={{width: 100, height: 130}} source={{ uri: 'https://t4.ftcdn.net/jpg/00/24/03/91/500_F_24039119_lKsO6t7q4Wgvd7kFtZ6wlBXGRMS6EQTq.jpg' }} />
                 { this.state.selectDifficulty == 26 ?

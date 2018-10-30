@@ -1,26 +1,366 @@
 [
-{
-  "suit" : "spades",
-  "color" : "black",
-  "faces" : ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"],
-  "value" : ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"],
-},
-{
-  "suit" : "hearts",
-  "color" : "red",
-  "faces" : ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"],
-  "value" : ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"],
-},
-{
-  "suit" : "clubs",
-  "color" : "black",
-  "faces" : ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"],
-  "value" : ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"],
-},
-{
-  "suit" : "diamonds",
-  "color" : "red",
-  "faces" : ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"],
-  "value" : ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"],
-}
+  {
+    "_id": 1,
+    "face": "A",
+    "value": 1,
+    "suit": "diamonds",
+    "color": "red"
+  },
+  {
+    "_id": 2,
+    "face": "A",
+    "value": 1,
+    "suit": "clubs",
+    "color": "black"
+  },
+  {
+    "_id": 3,
+    "face": "A",
+    "value": 1,
+    "suit": "hearts",
+    "color": "red"
+  },
+  {
+    "_id": 4,
+    "face": "A",
+    "value": 1,
+    "suit": "spades",
+    "color": "black"
+  },
+  {
+    "_id": 5,
+    "face": "2",
+    "value": 2,
+    "suit": "diamonds",
+    "color": "red"
+  },
+  {
+    "_id": 6,
+    "face": "2",
+    "value": 2,
+    "suit": "clubs",
+    "color": "black"
+  },
+  {
+    "_id": 7,
+    "face": "2",
+    "value": 2,
+    "suit": "hearts",
+    "color": "red"
+  },
+  {
+    "_id": 8,
+    "face": "2",
+    "value": 2,
+    "suit": "spades",
+    "color": "black"
+  },
+  {
+    "_id": 9,
+    "face": "3",
+    "value": 3,
+    "suit": "diamonds",
+    "color": "red"
+  },
+  {
+    "_id": 10,
+    "face": "3",
+    "value": 3,
+    "suit": "clubs",
+    "color": "black"
+  },
+  {
+    "_id": 11,
+    "face": "3",
+    "value": 3,
+    "suit": "hearts",
+    "color": "red"
+  },
+  {
+    "_id": 12,
+    "face": "3",
+    "value": 3,
+    "suit": "spades",
+    "color": "black"
+  },
+  {
+    "_id": 13,
+    "face": "4",
+    "value": 4,
+    "suit": "diamonds",
+    "color": "red"
+  },
+  {
+    "_id": 14,
+    "face": "4",
+    "value": 4,
+    "suit": "clubs",
+    "color": "black"
+  },
+  {
+    "_id": 15,
+    "face": "4",
+    "value": 4,
+    "suit": "hearts",
+    "color": "red"
+  },
+  {
+    "_id": 16,
+    "face": "4",
+    "value": 4,
+    "suit": "spades",
+    "color": "black"
+  },
+  {
+    "_id": 17,
+    "face": "5",
+    "value": 5,
+    "suit": "diamonds",
+    "color": "red"
+  },
+  {
+    "_id": 18,
+    "face": "5",
+    "value": 5,
+    "suit": "clubs",
+    "color": "black"
+  },
+  {
+    "_id": 19,
+    "face": "5",
+    "value": 5,
+    "suit": "hearts",
+    "color": "red"
+  },
+  {
+    "_id": 20,
+    "face": "5",
+    "value": 5,
+    "suit": "spades",
+    "color": "black"
+  },
+  {
+    "_id": 21,
+    "face": "6",
+    "value": 6,
+    "suit": "diamonds",
+    "color": "red"
+  },
+  {
+    "_id": 22,
+    "face": "6",
+    "value": 6,
+    "suit": "clubs",
+    "color": "black"
+  },
+  {
+    "_id": 23,
+    "face": "6",
+    "value": 6,
+    "suit": "hearts",
+    "color": "red"
+  },
+  {
+    "_id": 24,
+    "face": "6",
+    "value": 6,
+    "suit": "spades",
+    "color": "black"
+  },
+  {
+    "_id": 25,
+    "face": "7",
+    "value": 7,
+    "suit": "diamonds",
+    "color": "red"
+  },
+  {
+    "_id": 26,
+    "face": "7",
+    "value": 7,
+    "suit": "clubs",
+    "color": "black"
+  },
+  {
+    "_id": 27,
+    "face": "7",
+    "value": 7,
+    "suit": "hearts",
+    "color": "red"
+  },
+  {
+    "_id": 28,
+    "face": "7",
+    "value": 7,
+    "suit": "spades",
+    "color": "black"
+  },
+  {
+    "_id": 29,
+    "face": "8",
+    "value": 8,
+    "suit": "diamonds",
+    "color": "red"
+  },
+  {
+    "_id": 30,
+    "face": "8",
+    "value": 8,
+    "suit": "clubs",
+    "color": "black"
+  },
+  {
+    "_id": 31,
+    "face": "8",
+    "value": 8,
+    "suit": "hearts",
+    "color": "red"
+  },
+  {
+    "_id": 32,
+    "face": "8",
+    "value": 8,
+    "suit": "spades",
+    "color": "black"
+  },
+  {
+    "_id": 33,
+    "face": "9",
+    "value": 9,
+    "suit": "diamonds",
+    "color": "red"
+  },
+  {
+    "_id": 34,
+    "face": "9",
+    "value": 9,
+    "suit": "clubs",
+    "color": "black"
+  },
+  {
+    "_id": 35,
+    "face": "9",
+    "value": 9,
+    "suit": "hearts",
+    "color": "red"
+  },
+  {
+    "_id": 36,
+    "face": "9",
+    "value": 9,
+    "suit": "spades",
+    "color": "black"
+  },
+  {
+    "_id": 37,
+    "face": "10",
+    "value": 10,
+    "suit": "diamonds",
+    "color": "red"
+  },
+  {
+    "_id": 38,
+    "face": "10",
+    "value": 10,
+    "suit": "clubs",
+    "color": "black"
+  },
+  {
+    "_id": 39,
+    "face": "10",
+    "value": 10,
+    "suit": "hearts",
+    "color": "red"
+  },
+  {
+    "_id": 40,
+    "face": "10",
+    "value": 10,
+    "suit": "spades",
+    "color": "black"
+  },
+  {
+    "_id": 41,
+    "face": "J",
+    "value": 11,
+    "suit": "diamonds",
+    "color": "red"
+  },
+  {
+    "_id": 42,
+    "face": "J",
+    "value": 11,
+    "suit": "clubs",
+    "color": "black"
+  },
+  {
+    "_id": 43,
+    "face": "J",
+    "value": 11,
+    "suit": "hearts",
+    "color": "red"
+  },
+  {
+    "_id": 44,
+    "face": "J",
+    "value": 11,
+    "suit": "spades",
+    "color": "black"
+  },
+  {
+    "_id": 45,
+    "face": "Q",
+    "value": 12,
+    "suit": "diamonds",
+    "color": "red"
+  },
+  {
+    "_id": 46,
+    "face": "Q",
+    "value": 12,
+    "suit": "clubs",
+    "color": "black"
+  },
+  {
+    "_id": 47,
+    "face": "Q",
+    "value": 12,
+    "suit": "hearts",
+    "color": "red"
+  },
+  {
+    "_id": 48,
+    "face": "Q",
+    "value": 12,
+    "suit": "spades",
+    "color": "black"
+  },
+  {
+    "_id": 49,
+    "face": "K",
+    "value": 13,
+    "suit": "diamonds",
+    "color": "red"
+  },
+  {
+    "_id": 50,
+    "face": "K",
+    "value": 13,
+    "suit": "clubs",
+    "color": "black"
+  },
+  {
+    "_id": 51,
+    "face": "K",
+    "value": 13,
+    "suit": "hearts",
+    "color": "red"
+  },
+  {
+    "_id": 52,
+    "face": "K",
+    "value": 13,
+    "suit": "spades",
+    "color": "black"
+  },
 ]

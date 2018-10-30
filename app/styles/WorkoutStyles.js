@@ -80,14 +80,22 @@ const workoutStyles = StyleSheet.create({
     fontSize: 20,
     color: 'white'
   },
-  test: {
-    backgroundColor: 'rgba(255,255,255,0.5)',
+  modal: {
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    alignItems: 'center',
+    justifyContent: 'center',
     flex: 1,
-    marginLeft: 20,
-    marginRight: 20,
-    marginTop: 50,
-    marginBottom: 90,
-    borderRadius: 30
+  },
+  timer: {
+    color: '#fff',
+    fontSize: 30
+  },
+  workoutCards: {
+    width: 300,
+    height: 450,
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    alignItems: 'center'
   }
 });
 

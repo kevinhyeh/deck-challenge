@@ -1,22 +1,31 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, TouchableOpacity, Image, TextInput, Button, SafeAreaView, Alert, Modal } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, Image, TextInput, Button, SafeAreaView, Alert, Modal, Dimensions } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 import styles from '../styles/WorkoutStyles';
 import cards from '../cards.json';
 
+const formattedSeconds = (sec) =>
+  Math.floor(sec / 60) +
+    ':' +
+  ('0' + sec % 60).slice(-2)
+
 class WorkoutScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectDifficulty: '',
+      selectDifficulty: -1,
       selectNumber: -1,
       selectWorkouts: '',
       initialWorkouts: [],
       chosenWorkouts: [],
       addWorkout: '',
-      modalVisibility: false
-    }
+      modalVisibility: false,
+      shuffledDeck: [],
+      secondsElapsed: 0,
+      lastClearedIncrementer: null
+    };
+    this.incrementer = null;
   };
 
   fetchWorkouts = () => {
@@ -56,20 +65,58 @@ class WorkoutScreen extends Component {
 
   setModalVisibility = (visible) => {
     this.setState({ modalVisibility: visible })
+  };
+
+  shuffleHalf = (a) => {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    this.setState({shuffledDeck: a.splice(26, 27)});
+  };
+
+  shuffleFull = (a) => {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    this.setState({shuffledDeck: a});
+  };
+
+  nextCard = () => {
+    this.state.shuffledDeck.pop();
+    this.forceUpdate();
+  };
+
+  handleStartClick = () => {
+    this.incrementer = setInterval( () =>
+      this.setState({
+        secondsElapsed: this.state.secondsElapsed + 1
+      })
+    , 1000);
+  };
+
+  handleStopClick = () => {
+    clearInterval(this.incrementer);
+    this.setState({
+      lastClearedIncrementer: this.incrementer
+    });
   }
 
   render() {
     const { selectDifficulty, selectNumber, selectWorkouts, chosenWorkouts } = this.state;
 
-    const difficultyEasy = selectDifficulty == 'easy';
-    const difficultyHard = selectDifficulty == 'hard';
-    const difficultyClicked = selectDifficulty.length > 0;
+    const difficultyEasy = selectDifficulty == 26;
+    const difficultyHard = selectDifficulty == 52;
+    const difficultyClicked = selectDifficulty > 0;
 
     const twoWorkouts = selectNumber === 2;
     const fourWorkouts = selectNumber === 4;
     const numberClicked = selectNumber > 0;
 
     const workoutsSelected = chosenWorkouts.length == selectNumber;
+
+    const currentCard = this.state.shuffledDeck[this.state.shuffledDeck.length-1];
 
     const workoutList = this.state.initialWorkouts.map(workout => {
       if (this.state.chosenWorkouts.indexOf(workout.workout) > -1) {
@@ -91,11 +138,36 @@ class WorkoutScreen extends Component {
 
     return (
       <SafeAreaView style={styles.workoutContainer}>
-          <Modal visible={this.state.modalVisibility} transparent animationType={'fade'}>
-            <View style={styles.test}>
-              <TouchableOpacity onPress={() => this.setModalVisibility(false)}>
-                <Text>Close</Text>
-              </TouchableOpacity>
+          <Modal visible={this.state.modalVisibility} transparent animationType={'slide'}>
+            <View style={styles.modal}>
+              <Text style={styles.timer}>{formattedSeconds(this.state.secondsElapsed)}</Text>
+              {(this.state.secondsElapsed === 0 ||
+                this.incrementer === this.state.lastClearedIncrementer
+                ? <Text onPress={() => this.handleStartClick()}>start</Text>
+                : <Text onPress={() => this.handleStopClick()}>stop</Text>
+              )}
+              { this.state.shuffledDeck.length > 0 ? 
+                <View style={{ alignItems: 'center' }}>
+                  <View style={styles.workoutCards}>
+                    <Text>{this.state.shuffledDeck.length}/{this.state.selectDifficulty} </Text>
+                    <Text>{currentCard.face}({currentCard.value})
+                    </Text>
+                    { currentCard.color == 'red' ? 
+                      <Text>{this.state.chosenWorkouts[0]}</Text>
+                    : <Text>{this.state.chosenWorkouts[1]}</Text>
+                    }
+                    {console.log(this.state.shuffledDeck)}
+                  </View>
+                  <Text style={{color: '#fff', fontSize: 24 }} onPress={() => this.nextCard()}>Next Card</Text>
+                </View>
+              : <View>
+                <Image style={{width: 100, height: 130}} source={{ uri: 'https://t4.ftcdn.net/jpg/00/24/03/91/500_F_24039119_lKsO6t7q4Wgvd7kFtZ6wlBXGRMS6EQTq.jpg' }} />
+                { this.state.selectDifficulty == 26 ?
+                  <Text style={{color: '#fff', fontSize: 24 }} onPress={() => this.shuffleHalf(cards)}>Start Workout</Text>
+                : <Text style={{color: '#fff', fontSize: 24 }} onPress={() => this.shuffleFull(cards)}>Start Workout</Text>
+                }
+                </View>
+              }
             </View>
           </Modal>
           <View style={styles.section}>
@@ -106,7 +178,7 @@ class WorkoutScreen extends Component {
                 <Text>Easy</Text>
               </TouchableOpacity>  
               ) : (
-              <TouchableOpacity style={styles.inactiveBut} onPress={ selectDifficulty => this.setState({ selectDifficulty: 'easy' }) }>
+              <TouchableOpacity style={styles.inactiveBut} onPress={ selectDifficulty => this.setState({ selectDifficulty: 26 }) }>
                 <Text>Easy</Text>
               </TouchableOpacity>
               )
@@ -116,7 +188,7 @@ class WorkoutScreen extends Component {
                 <Text>Hard</Text>
               </TouchableOpacity>  
               ) : (
-              <TouchableOpacity style={styles.inactiveBut} onPress={ selectDifficulty => this.setState({ selectDifficulty: 'hard' }) }>
+              <TouchableOpacity style={styles.inactiveBut} onPress={ selectDifficulty => this.setState({ selectDifficulty: 52 }) }>
                 <Text>Hard</Text>
               </TouchableOpacity>
               )
@@ -168,6 +240,21 @@ class WorkoutScreen extends Component {
           }
       </SafeAreaView>
     );
+  }
+}
+
+const {height, width} = Dimensions.get('window');
+
+const options = {
+  container: {
+    padding: 5,
+    borderRadius: 5,
+    width: 280
+  },
+  text: {
+    fontSize: 40,
+    color: '#FFF',
+    marginLeft: 7,
   }
 }
 

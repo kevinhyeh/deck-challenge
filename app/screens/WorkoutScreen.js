@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, TouchableOpacity, Image, TextInput, Button, SafeAreaView, Alert, Modal, Dimensions } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, ImageBackground, TextInput, Button, SafeAreaView, Alert, Modal, Dimensions } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 import styles from '../styles/WorkoutStyles';
 import cards from '../cards.json';
+import quotes from '../quotes.json';
 
 const formattedSeconds = (sec) =>
   Math.floor(sec / 60) +
@@ -23,10 +24,10 @@ class WorkoutScreen extends Component {
       modalVisibility: false,
       shuffledDeck: [],
       secondsElapsed: 0,
-      lastClearedIncrementer: null,
       finishedCount: 0
     };
     this.incrementer = null;
+    this.initialState = this.state;
   };
 
   fetchWorkouts = () => {
@@ -69,19 +70,23 @@ class WorkoutScreen extends Component {
   };
 
   shuffleHalf = (a) => {
-    for (let i = a.length - 1; i > 0; i--) {
+    let aCopy = a.slice(0);
+    for (let i = aCopy.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
+        [aCopy[i], aCopy[j]] = [aCopy[j], aCopy[i]];
     }
-    this.setState({shuffledDeck: a.splice(26, 27)});
+    this.setState({shuffledDeck: aCopy.splice(26, 27)});
+    this.handleStartClick();
   };
 
   shuffleFull = (a) => {
-    for (let i = a.length - 1; i > 0; i--) {
+    let aCopy = a.slice(0);
+    for (let i = aCopy.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
+        [aCopy[i], aCopy[j]] = [aCopy[j], aCopy[i]];
     }
-    this.setState({shuffledDeck: a});
+    this.setState({shuffledDeck: aCopy});
+    this.handleStartClick();
   };
 
   nextCard = () => {
@@ -99,9 +104,28 @@ class WorkoutScreen extends Component {
 
   handleStopClick = () => {
     clearInterval(this.incrementer);
-    this.setState({
-      lastClearedIncrementer: this.incrementer
-    });
+  };
+
+  exitWorkoutAlert = () => {
+    Alert.alert(
+          'Leaving Workout',
+          'Are you sure?',
+          [
+            {text: 'No', onPress: () => console.log('Cancel Pressed!')},
+            {text: 'Yes', onPress: () => this.exitWorkout()},
+          ],
+          { cancelable: false }
+        )
+  };
+
+  exitWorkout = () => {
+    this.setModalVisibility(false);
+    this.handleStopClick();
+    this.resetState();
+  }
+
+  resetState = () => {
+    this.setState(this.initialState);
   }
 
   render() {
@@ -137,39 +161,93 @@ class WorkoutScreen extends Component {
       }
     });
 
+    const pickedQuote = quotes[Math.floor(Math.random() * quotes.length - 1)];
+
+     if (this.state.finishedCount == this.state.selectDifficulty) {
+      this.handleStopClick()
+    }
+
     return (
       <SafeAreaView style={styles.workoutContainer}>
           <Modal visible={this.state.modalVisibility} transparent animationType={'slide'}>
             <View style={styles.modal}>
+              <Text onPress={() => this.exitWorkoutAlert()} style={{ color: 'white' }}>Exit Workout</Text>
               <Text style={styles.timer}>{formattedSeconds(this.state.secondsElapsed)}</Text>
-              {(this.state.secondsElapsed === 0 ||
-                this.incrementer === this.state.lastClearedIncrementer
-                ? <Text onPress={() => this.handleStartClick()}>start</Text>
-                : <Text onPress={() => this.handleStopClick()}>stop</Text>
-              )}
               { this.state.shuffledDeck.length > 0 ? 
                 <View style={{ alignItems: 'center' }}>
                   <View style={styles.workoutCards}>
-                    <Text>{this.state.shuffledDeck.length}/{this.state.selectDifficulty}</Text>
-                    <Text>{currentCard.face}({currentCard.value})
+                    <Text style={{ fontSize: 20 }}>{this.state.shuffledDeck.length}/{this.state.selectDifficulty}</Text>
+                    <View>
+                    <Text style={{ marginLeft: 30, width: 300, fontSize: 40 }}>{currentCard.face}
+                      <View>
+                        { currentCard.suit == 'spades' ?
+                          <Text style={{ fontSize: 38 }}>&#9830;</Text>
+                        : currentCard.suit == 'hearts' ?
+                          <Text style={{ color: 'red', fontSize: 38 }}>&#9829;</Text>
+                        : currentCard.suit == 'clubs' ?
+                          <Text style={{ fontSize: 38 }}>&#9827;</Text>
+                        : <Text style={{ color: 'red', fontSize: 38 }}>&#9830;</Text>
+                        }
+                      </View>
                     </Text>
-                    { currentCard.color == 'red' ? 
-                      <Text>{this.state.chosenWorkouts[0]}</Text>
-                    : <Text>{this.state.chosenWorkouts[1]}</Text>
+                    </View>
+                    { this.state.selectNumber == 4 ?
+                      <View style={{ height: 300, justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 50 }}>{currentCard.value}</Text>
+                      { currentCard.suit == 'spades' ?
+                        <Text style={{ fontSize: 40 }}>{this.state.chosenWorkouts[0]}</Text>
+                      : currentCard.suit == 'hearts' ?
+                        <Text style={{ fontSize: 40 }}>{this.state.chosenWorkouts[1]}</Text>
+                      : currentCard.suit == 'clubs' ?
+                        <Text style={{ fontSize: 40 }}>{this.state.chosenWorkouts[2]}</Text>
+                      : <Text style={{ fontSize: 40 }}>{this.state.chosenWorkouts[3]}</Text>
+                      }
+                      </View>
+                    : <View style={{ height: 300, justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 50 }}>{currentCard.value}</Text>
+                      { currentCard.color == 'red' ? 
+                        <Text style={{ fontSize: 40 }}>{this.state.chosenWorkouts[0]}</Text>
+                      : <Text style={{ fontSize: 40 }}>{this.state.chosenWorkouts[1]}</Text>
+                      }
+                      </View>
                     }
-                    {console.log(this.state.finishedCount)}
-                  </View>
-                  <Text style={{color: '#fff', fontSize: 24 }} onPress={() => this.nextCard()}>Next Card</Text>
+                    <View>
+                    <Text style={{ marginLeft: 210, fontSize: 40, transform: [{ rotate: '180deg' }] }}>{currentCard.face}
+                      <View>
+                        { currentCard.suit == 'spades' ?
+                          <Text style={{ fontSize: 38 }}>&#9830;</Text>
+                        : currentCard.suit == 'hearts' ?
+                          <Text style={{ color: 'red', fontSize: 38 }}>&#9829;</Text>
+                        : currentCard.suit == 'clubs' ?
+                          <Text style={{ fontSize: 38 }}>&#9827;</Text>
+                        : <Text style={{ color: 'red', fontSize: 38 }}>&#9830;</Text>
+                        }
+                      </View>
+                    </Text>
+                    </View>
+                  </View> 
+                  <TouchableOpacity style={[styles.shuffleBut, {marginTop: 50}]} onPress={() => this.nextCard()}>
+                  <Text style={styles.shuffleText}>Next Card</Text>
+                  </TouchableOpacity>
                 </View>
               : this.state.finishedCount == this.state.selectDifficulty ?
                   <View style={styles.workoutCards}>
                     <Text>You finished!</Text>
                   </View>
-              : <View>
-                <Image style={{width: 100, height: 130}} source={{ uri: 'https://t4.ftcdn.net/jpg/00/24/03/91/500_F_24039119_lKsO6t7q4Wgvd7kFtZ6wlBXGRMS6EQTq.jpg' }} />
+              : <View style={{ alignItems: 'center' }}>
+                <ImageBackground style={{ width: 300, height: 450, justifyContent: 'center', alignItems: 'center' }}source={require('../assets/cardsBackface.png')}>
+                {/*
+                <Text style={{ color: '#fff', fontSize: 24, fontFamily: 'AvenirNext-HeavyItalic', width: 280 }}>{pickedQuote.quote.toString()}</Text>
+                <Text style={{ color: '#fff', fontSize: 24, fontFamily: 'AvenirNext-Heavy' }}>- {pickedQuote.author}</Text>
+                */}
+                </ImageBackground>
                 { this.state.selectDifficulty == 26 ?
+                  <TouchableOpacity style={[styles.shuffleBut, {marginTop: 50}]} onPress={() => this.shuffleHalf(cards)}>
                   <Text style={{color: '#fff', fontSize: 24 }} onPress={() => this.shuffleHalf(cards)}>Start Workout</Text>
-                : <Text style={{color: '#fff', fontSize: 24 }} onPress={() => this.shuffleFull(cards)}>Start Workout</Text>
+                  </TouchableOpacity>
+                : <TouchableOpacity style={[styles.shuffleBut, {marginTop: 50}]} onPress={() => this.shuffleFull(cards)}>
+                  <Text style={{color: '#fff', fontSize: 24 }} onPress={() => this.shuffleHalf(cards)}>Start Workout</Text>
+                  </TouchableOpacity>
                 }
                 </View>
               }
@@ -190,7 +268,9 @@ class WorkoutScreen extends Component {
             }        
             { difficultyHard ? (
               <TouchableOpacity style={styles.activeBut}>
+              {console.log(pickedQuote.quote)}
                 <Text>Hard</Text>
+              }
               </TouchableOpacity>  
               ) : (
               <TouchableOpacity style={styles.inactiveBut} onPress={ selectDifficulty => this.setState({ selectDifficulty: 52 }) }>

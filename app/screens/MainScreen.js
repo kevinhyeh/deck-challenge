@@ -102,6 +102,6 @@ export default createMaterialBottomTabNavigator({
     inactiveColor: 'black',
     barStyle: {
       height: 70,
-      backgroundColor: 'red'
+      backgroundColor: '#59cbbd'
     }
   });

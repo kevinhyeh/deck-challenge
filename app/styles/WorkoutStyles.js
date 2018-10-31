@@ -88,14 +88,18 @@ const workoutStyles = StyleSheet.create({
   },
   timer: {
     color: '#fff',
-    fontSize: 30
+    fontSize: 50,
+    marginBottom: 40
   },
   workoutCards: {
     width: 300,
     height: 450,
     backgroundColor: '#fff',
     borderRadius: 20,
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: '#59cbbd',
+    borderWidth: 6
   }
 });
 

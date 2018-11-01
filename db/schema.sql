@@ -15,4 +15,14 @@ CREATE TABLE workouts(
   PRIMARY KEY (id)
 );
 
+CREATE TABLE history(
+  id INT AUTO_INCREMENT NOT NULL,
+  date_completed DATETIME,
+  timer VARCHAR(45) NOT NULL,
+  difficulty INT NOT NULL,
+  chosen_workouts VARCHAR(45) NOT NULL,
+  deck_completed BOOLEAN DEFAULT FALSE,
+  favorite BOOLEAN DEFAULT FALSE,
+  PRIMARY KEY (id)
+);
 

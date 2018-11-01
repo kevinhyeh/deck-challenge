@@ -24,7 +24,8 @@ class WorkoutScreen extends Component {
       modalVisibility: false,
       shuffledDeck: [],
       secondsElapsed: 0,
-      finishedCount: 0
+      finishedCount: 0,
+      deckCompleted: true
     };
     this.incrementer = null;
     this.initialState = this.state;
@@ -39,7 +40,7 @@ class WorkoutScreen extends Component {
 
   fetchAddWorkout = () => {
     if (this.state.addWorkout != '') {
-      fetch('http://192.168.1.72:3001/add', {
+      fetch('http://192.168.1.72:3001/addWorkout', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -53,6 +54,23 @@ class WorkoutScreen extends Component {
       Alert.alert('Enter a workout');
     };
   };
+
+  fecthFinishWorkout = () => {
+    fetch('http://192.168.1.72:3001/addHistory', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        timer: formattedSeconds(this.state.secondsElapsed), 
+        difficulty: this.state.selectDifficulty,
+        chosenWorkouts: this.state.chosenWorkouts.join(','),
+        deckCompleted: this.state.deckCompleted,
+        favorite: this.state.favorite
+      })
+    }).then(res => res.json())
+  }
 
   loadWorkouts = (num) => {
     this.fetchWorkouts();
@@ -121,12 +139,20 @@ class WorkoutScreen extends Component {
   exitWorkout = () => {
     this.setModalVisibility(false);
     this.handleStopClick();
+    this.setState({ deckCompleted: false });
+    this.fecthFinishWorkout();
     this.resetState();
-  }
+  };
 
   resetState = () => {
     this.setState(this.initialState);
-  }
+  };
+
+  finishWorkout = () => {
+    this.setState({ deckCompleted: true });
+    this.fecthFinishWorkout();
+    this.resetState();
+  };
 
   render() {
     const { selectDifficulty, selectNumber, selectWorkouts, chosenWorkouts } = this.state;
@@ -164,17 +190,17 @@ class WorkoutScreen extends Component {
     const pickedQuote = quotes[Math.floor(Math.random() * quotes.length - 1)];
 
      if (this.state.finishedCount == this.state.selectDifficulty) {
-      this.handleStopClick()
+      this.handleStopClick();
     }
 
     return (
       <SafeAreaView style={styles.workoutContainer}>
           <Modal visible={this.state.modalVisibility} transparent animationType={'slide'}>
             <View style={styles.modal}>
-              <Text onPress={() => this.exitWorkoutAlert()} style={{ color: 'white' }}>Exit Workout</Text>
-              <Text style={styles.timer}>{formattedSeconds(this.state.secondsElapsed)}</Text>
               { this.state.shuffledDeck.length > 0 ? 
                 <View style={{ alignItems: 'center' }}>
+                  <Text onPress={() => this.exitWorkoutAlert()} style={{ color: 'white' }}>Exit Workout</Text>
+                  <Text style={styles.timer}>{formattedSeconds(this.state.secondsElapsed)}</Text>
                   <View style={styles.workoutCards}>
                     <Text style={{ fontSize: 20 }}>{this.state.shuffledDeck.length}/{this.state.selectDifficulty}</Text>
                     <View>
@@ -232,9 +258,35 @@ class WorkoutScreen extends Component {
                 </View>
               : this.state.finishedCount == this.state.selectDifficulty ?
                   <View style={styles.workoutCards}>
-                    <Text>You finished!</Text>
+                    <Text>Congrats!</Text>
+                    <Text>You finished with a time of</Text>
+                    <Text>{formattedSeconds(this.state.secondsElapsed)}</Text>
+                    <Text>Add this workout to your favorites?</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                    { this.state.favorites == true ?
+                      <TouchableOpacity style={styles.activeBut}>
+                      <Text>Yes</Text>
+                      </TouchableOpacity>
+                    : <TouchableOpacity onPress={() => this.setState({ favorite: true })} style={styles.inactiveBut}>
+                      <Text>Yes</Text>
+                      </TouchableOpacity>
+                    }
+                    { this.state.favorites == false ?
+                      <TouchableOpacity style={styles.activeBut}>
+                      <Text>No</Text>
+                      </TouchableOpacity>
+                    : <TouchableOpacity onPress={() => this.setState({ favorite: false })} style={styles.inactiveBut}>
+                      <Text>No</Text>
+                      </TouchableOpacity>
+                    }
+                    </View>
+                    <TouchableOpacity>
+                    <Text onPress={() => this.finishWorkout()}>Finish Workout</Text>
+                    </TouchableOpacity>
                   </View>
               : <View style={{ alignItems: 'center' }}>
+                <Text onPress={() => this.exitWorkoutAlert()} style={{ color: 'white' }}>Exit Workout</Text>
+                <Text style={styles.timer}>{formattedSeconds(this.state.secondsElapsed)}</Text>
                 <ImageBackground style={{ width: 300, height: 450, justifyContent: 'center', alignItems: 'center' }}source={require('../assets/cardsBackface.png')}>
                 {/*
                 <Text style={{ color: '#fff', fontSize: 24, fontFamily: 'AvenirNext-HeavyItalic', width: 280 }}>{pickedQuote.quote.toString()}</Text>
@@ -256,9 +308,11 @@ class WorkoutScreen extends Component {
           <View style={styles.section}>
             <Text style={styles.header}>1. Select Difficulty</Text>
             <View style={styles.rowContainer}>
+                    {console.log(this.state)}
+
             { difficultyEasy ? (
               <TouchableOpacity style={styles.activeBut}>
-                <Text>Easy</Text>
+                <Text>Easy</Text>                
               </TouchableOpacity>  
               ) : (
               <TouchableOpacity style={styles.inactiveBut} onPress={ selectDifficulty => this.setState({ selectDifficulty: 26 }) }>
@@ -268,7 +322,6 @@ class WorkoutScreen extends Component {
             }        
             { difficultyHard ? (
               <TouchableOpacity style={styles.activeBut}>
-              {console.log(pickedQuote.quote)}
                 <Text>Hard</Text>
               }
               </TouchableOpacity>  

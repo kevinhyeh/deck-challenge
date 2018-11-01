@@ -40,11 +40,39 @@ app.post('/workouts', (req, res) => {
   });
 });
 
-app.post('/add', (req, res) => {
+app.post('/selectHistory', (req, res) => {
+  connection.query("SELECT * FROM history", (err, data) => {
+    res.json(data);
+  });
+});
+
+app.post('/selectFavorites', (req, res) => {
+  connection.query("SELECT * FROM history WHERE favorite = 1", (err, data) => {
+    res.json(data);
+  });
+});
+
+app.post('/updateFavorite', (req, res) => {
+  let favorite = req.body.favorite;
+  let id = req.body.id;
+  connection.query("UPDATE history SET favorite = ? WHERE id = ?", [favorite, id]);
+});
+
+app.post('/addWorkout', (req, res) => {
   console.log(req.body.workout);
   connection.query("INSERT INTO workouts (workout) VALUES (?)", req.body.workout, (err, data) => {
     res.json(data);
   });
+});
+
+app.post('/addHistory', (req, res) => {
+  let timer = req.body.timer;
+  let difficulty = req.body.difficulty;
+  let chosenWorkouts = req.body.chosenWorkouts;
+  let deckCompleted = req.body.deckCompleted;
+  let favorite = req.body.favorite;
+  connection.query("INSERT INTO history (timer, difficulty, chosen_workouts, deck_completed, favorite) VALUES (?,?,?,?,?)", [timer, difficulty, chosenWorkouts, deckCompleted, favorite]);
+  console.log(req.body)
 });
 
 app.listen(3001, () => {

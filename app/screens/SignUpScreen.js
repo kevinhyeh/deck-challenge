@@ -67,7 +67,7 @@ class SignUpScreen extends Component {
 
         <Text style={styles.header}>Register</Text>
 
-        <TextInput style={styles.input} placeholder="Your Name" placeholderTextColor="#fff" onChangeText={TextInputName => this.setState({TextInputName})} />
+        <TextInput style={styles.input} returnKeyType={ 'next' } placeholder="Your Name" placeholderTextColor="#fff" onChangeText={TextInputName => this.setState({TextInputName})} />
 
         <TextInput style={styles.input} placeholder="Your Email" placeholderTextColor="#fff" onChangeText={TextInputEmail => this.setState({TextInputEmail})} />
 

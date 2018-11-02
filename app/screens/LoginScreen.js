@@ -26,15 +26,17 @@ class LoginScreen extends Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        username: TextInputUsername,
-        password: TextInputPassword
+        username: TextInputUsername.toLowerCase(),
+        password: TextInputPassword.toLowerCase()
       })
     }).then(res => res.json())
     .then(resultingJSON => {
-      if (resultingJSON == 'Invalid fields') {
+      if (resultingJSON == 'No account found') {
+        Alert.alert(resultingJSON);
+      } else if (resultingJSON == 'Invalid password') {
         Alert.alert(resultingJSON);
       } else {
-        this.props.screenProps.user_id = resultingJSON;
+        this.props.screenProps.user_id = resultingJSON.user_id;
         this.props.navigation.navigate('Main');
       }
     });
@@ -60,7 +62,7 @@ class LoginScreen extends Component {
         <TextInput style={[styles.input, {marginBottom: 0}]} placeholder="Username" placeholderTextColor="#fff" onChangeText={TextInputUsername => this.setState({TextInputUsername})} />
 
         <PasswordInputText style={styles.input} placeholder="Password" placeholderTextColor="#fff" onChangeText={TextInputPassword => this.setState({TextInputPassword})} />
-
+        {console.log(this.props.screenProps.user_id)}
         <TouchableOpacity style={styles.button} onPress={() => this.login()}>
         <Text style={styles.btnText}>Enter</Text>
         </TouchableOpacity>

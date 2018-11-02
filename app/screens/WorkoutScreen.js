@@ -67,7 +67,8 @@ class WorkoutScreen extends Component {
         difficulty: this.state.selectDifficulty,
         chosenWorkouts: this.state.chosenWorkouts.join(', '),
         deckCompleted: this.state.deckCompleted,
-        favorite: this.state.favorite
+        favorite: this.state.favorite,
+        user_id: this.props.screenProps.user_id
       })
     }).then(res => res.json())
   }
@@ -163,7 +164,7 @@ class WorkoutScreen extends Component {
 
     const twoWorkouts = selectNumber === 2;
     const fourWorkouts = selectNumber === 4;
-    const numberClicked = selectNumber > 0;
+    const numberClicked = selectNumber > 0; 
 
     const workoutsSelected = chosenWorkouts.length == selectNumber;
 
@@ -200,6 +201,7 @@ class WorkoutScreen extends Component {
               { this.state.shuffledDeck.length > 0 ? 
                 <View style={{ alignItems: 'center' }}>
                   <Text onPress={() => this.exitWorkoutAlert()} style={{ color: 'white' }}>Exit Workout</Text>
+                  {console.log(this.props.screenProps.user_id)}
                   <Text style={styles.timer}>{formattedSeconds(this.state.secondsElapsed)}</Text>
                   <View style={styles.workoutCards}>
                     <Text style={{ fontSize: 20 }}>{this.state.shuffledDeck.length}/{this.state.selectDifficulty}</Text>

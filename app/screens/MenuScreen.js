@@ -5,8 +5,8 @@ import { Icon } from 'react-native-elements';
 import styles from '../styles/menuStyles';
 
 class MenuScreen extends Component {
-  render() {
 
+  render() {
   const { navigate } = this.props.navigation; 
 
     return (

@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 app.use(bodyParser());
 
@@ -12,6 +14,8 @@ const connection = mysql.createConnection({
   password: "",
   database: "deck_db"
 });
+
+// require('dotenv').config()
 
 connection.connect((err) => {
   if (err) throw err;
@@ -32,8 +36,12 @@ app.post('/signup', (req, res) => {
   let password = req.body.password;
   connection.query("SELECT * FROM users WHERE email = ? OR username = ?", [email, username], (err, data) => {
     if (data.length == 0) {
-      connection.query("INSERT INTO users (user, email, username, password) VALUES (?,?,?,?)", [user, email, username, password], (err, data) => {
-        res.json('Signed Up')
+      bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(req.body.password, salt, function(err, hash) {
+          connection.query("INSERT INTO users (user, email, username, password) VALUES (?,?,?,?)", [user, email, username, hash], (err, data) => {
+            res.json('Signed Up')
+          });
+        });
       });
     } else {
       if (data[0].email == email) {
@@ -47,12 +55,19 @@ app.post('/signup', (req, res) => {
 
 app.post('/login', (req, res) => {
   connection.query("SELECT * FROM users WHERE username = ?", req.body.username, (err, data) => {
-    console.log(data)
-    // if (data[0].username != req.body.username || data[0].password != req.body.password) {
-    //   res.json('Invalid fields');
-    // } else {
-    //   res.json(data[0].id)
-    // }
+    let payload = {
+            id: data.id,
+            username: data.username
+        };
+    // let token = jwt.sign(payload, .env.JWT_SECRET, { expiresIn: '24h' });
+
+    if (data.length == 0) {
+      res.json('No account found');
+    } else if (!bcrypt.compareSync(req.body.password, data[0].password)) {
+      res.json('Invalid password');
+    } else {
+      res.json({ user_id: data[0].id, message: 'Logged In'});
+    }
   });
 });
 

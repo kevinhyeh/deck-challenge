@@ -30,10 +30,10 @@ class SignUpScreen extends Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        user: TextInputName, 
-        email: TextInputEmail,
-        username: TextInputUsername,
-        password: TextInputPassword
+        user: TextInputName.toLowerCase(), 
+        email: TextInputEmail.toLowerCase(),
+        username: TextInputUsername.toLowerCase(),
+        password: TextInputPassword.toLowerCase()
       })
     }).then(res => res.json())
     .then(resultingJSON => {

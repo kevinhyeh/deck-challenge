@@ -9,7 +9,7 @@ class MyDeckScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      workoutHistory: []
+      favorites: []
     }
   }
 
@@ -20,14 +20,21 @@ class MyDeckScreen extends Component {
 
   load = () => {
     fetch('http://localhost:3001/selectFavorites', {
-      method: 'POST'
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user_id: this.props.screenProps.user_id
+      })
     }).then(res => res.json())
-    .then(resultingJSON => this.setState({ workoutHistory : resultingJSON }))
+    .then(resultingJSON => this.setState({ favorites : resultingJSON }))
   };
 
   render() {
 
-    const workoutHistory = this.state.workoutHistory.map(workout => {
+    const favorites = this.state.favorites.map(workout => {
       return <View key={workout.id} style={{ width: 300, height: 450, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
         <Text>{workout.id}</Text>
         <Text>{workout.timer}</Text>
@@ -39,7 +46,7 @@ class MyDeckScreen extends Component {
     return (
       <ScrollView style={{ backgroundColor: '#36485f' }}contentInsetAdjustmentBehavior="automatic">
         <SafeAreaView>
-          {workoutHistory}
+          {favorites}
         </SafeAreaView>
       </ScrollView>
     );

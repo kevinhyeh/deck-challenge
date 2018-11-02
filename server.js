@@ -79,13 +79,13 @@ app.post('/workouts', (req, res) => {
 });
 
 app.post('/selectHistory', (req, res) => {
-  connection.query("SELECT * FROM history", (err, data) => {
+  connection.query("SELECT * FROM history WHERE user_id = ?", req.body.user_id, (err, data) => {
     res.json(data);
   });
 });
 
 app.post('/selectFavorites', (req, res) => {
-  connection.query("SELECT * FROM history WHERE favorite = 1", (err, data) => {
+  connection.query("SELECT * FROM history WHERE favorite = 1 AND user_id = ?", req.body.user_id, (err, data) => {
     res.json(data);
   });
 });
@@ -109,7 +109,8 @@ app.post('/addHistory', (req, res) => {
   let chosenWorkouts = req.body.chosenWorkouts;
   let deckCompleted = req.body.deckCompleted;
   let favorite = req.body.favorite;
-  connection.query("INSERT INTO history (timer, difficulty, chosen_workouts, deck_completed, favorite) VALUES (?,?,?,?,?)", [timer, difficulty, chosenWorkouts, deckCompleted, favorite]);
+  let user_id = req.body.user_id;
+  connection.query("INSERT INTO history (timer, difficulty, chosen_workouts, deck_completed, favorite, user_id) VALUES (?,?,?,?,?,?)", [timer, difficulty, chosenWorkouts, deckCompleted, favorite, user_id]);
 });
 
 app.listen(3001, () => {

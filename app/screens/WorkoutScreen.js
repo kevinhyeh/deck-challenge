@@ -25,7 +25,7 @@ class WorkoutScreen extends Component {
       shuffledDeck: [],
       secondsElapsed: 0,
       finishedCount: 0,
-      deckCompleted: true
+      deckCompleted: true,
     };
     this.incrementer = null;
     this.initialState = this.state;
@@ -151,6 +151,7 @@ class WorkoutScreen extends Component {
 
   finishWorkout = () => {
     this.setState({ deckCompleted: true });
+    console.log(this.state)
     this.fecthFinishWorkout();
     this.resetState();
   };

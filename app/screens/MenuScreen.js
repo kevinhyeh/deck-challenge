@@ -24,7 +24,7 @@ class MenuScreen extends Component {
         </View>
         <View style={styles.rowContainer}>
           <Icon name='exit-to-app' color='#000' size={40} />
-          <Text style={styles.text}>Log Out</Text>
+          <Text style={styles.text} onPress={() => navigate('Home')}>Log Out</Text>
         </View>
       </SafeAreaView>
     );

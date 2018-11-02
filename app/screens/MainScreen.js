@@ -15,38 +15,6 @@ import SettingsScreen from './SettingsScreen';
 import styles from '../styles/Styles';
 import menuStyles from '../styles/menuStyles';
 
-class Workout extends Component {
-  render() {
-    return (
-      <WorkoutScreen />
-    );
-  }
-}
-
-class MyDeck extends Component {
-  render() {
-    return (
-      <MyDeckScreen />
-    );
-  }
-}
-
-class History extends Component {
-  render() {
-    return (
-      <HistoryScreen />
-    );
-  }
-}
-
-class Menu extends Component {
-  render() {
-    return (
-       <MenuNav />
-    );
-  }
-}
-
 const MenuNav = createStackNavigator({
   Menu: { 
     screen: MenuScreen,

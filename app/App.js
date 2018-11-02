@@ -9,9 +9,20 @@ import MainScreen from './screens/MainScreen';
 import ProfileScreen from './screens/ProfileScreen';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user_id: 0
+    }
+  }
+
+  returnData = (id) => {
+    this.setState({ user_id: id })
+  }
+
   render() {
     return (
-      <AppStackNavigator />
+      <AppStackNavigator screenProps={{ user_id: this.state.user_id }} />
     );
   }
 }
@@ -44,6 +55,9 @@ const AppStackNavigator = createStackNavigator({
   Profile: {
     screen: ProfileScreen
   }
+}, {
+  initialRouteName: 'Home',
+  initialRouteParams: { me: 'hello' }
 })
 
 export default App;

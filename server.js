@@ -19,20 +19,43 @@ connection.connect((err) => {
 });
 
 app.get('/users', (req, res) => {
-  connection.query('SELECT * FROM users', (err, results) => {
+  connection.query('SELECT * FROM users', (err, data) => {
     if (err) throw err;
-    console.log(results);
+    console.log(data);
   });
 });
 
 app.post('/signup', (req, res) => {
-  // console.log(req.body.name)
   let user = req.body.user;
   let email = req.body.email;
   let username = req.body.username;
   let password = req.body.password;
-  connection.query("INSERT INTO users (user, email, username, password) VALUES (?,?,?,?)", [user, email, username, password]);
+  connection.query("SELECT * FROM users WHERE email = ? OR username = ?", [email, username], (err, data) => {
+    if (data.length == 0) {
+      connection.query("INSERT INTO users (user, email, username, password) VALUES (?,?,?,?)", [user, email, username, password], (err, data) => {
+        res.json('Signed Up')
+      });
+    } else {
+      if (data[0].email == email) {
+        res.json('Email already used');
+      } else if (data[0].username == username) {
+        res.json('Username taken');
+      }
+    }
+  })
 });
+
+app.post('/login', (req, res) => {
+  connection.query("SELECT * FROM users WHERE username = ?", req.body.username, (err, data) => {
+    console.log(data)
+    // if (data[0].username != req.body.username || data[0].password != req.body.password) {
+    //   res.json('Invalid fields');
+    // } else {
+    //   res.json(data[0].id)
+    // }
+  });
+});
+
 
 app.post('/workouts', (req, res) => {
   connection.query("SELECT * FROM workouts", (err, data) => {
@@ -72,7 +95,6 @@ app.post('/addHistory', (req, res) => {
   let deckCompleted = req.body.deckCompleted;
   let favorite = req.body.favorite;
   connection.query("INSERT INTO history (timer, difficulty, chosen_workouts, deck_completed, favorite) VALUES (?,?,?,?,?)", [timer, difficulty, chosenWorkouts, deckCompleted, favorite]);
-  console.log(req.body)
 });
 
 app.listen(3001, () => {

@@ -20,14 +20,14 @@ class HistoryScreen extends Component {
   };
 
   load = () => {
-    fetch('http://192.168.1.72:3001/selectHistory', {
+    fetch('http://localhost:3001/selectHistory', {
       method: 'POST'
     }).then(res => res.json())
     .then(resultingJSON => this.setState({ workoutHistory : resultingJSON }))
   };
 
   favorite = () => {
-    fetch('http://192.168.1.72:3001/updateFavorite', {
+    fetch('http://localhost:3001/updateFavorite', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -47,8 +47,9 @@ class HistoryScreen extends Component {
         <Text>{workout.deck_completed}</Text>
         <Text>{workout.timer}</Text>
         <Text>{workout.difficulty}</Text>
-        <Text>{workout.chosenWorkouts}</Text>
+        <Text>{workout.chosen_workouts}</Text>
         <Text onPress={() => this.favorite()}>&#9829;</Text>
+        <Text>{this.props.screenProps.user_id}</Text>
       </View>
     });
     

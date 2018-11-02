@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch'
   },
   header: {
-    fontSize: 24,
+    fontSize: 26,
     color: '#59cbbd',
     paddingBottom: 10,
     marginTop: 20,
@@ -25,8 +25,9 @@ const styles = StyleSheet.create({
     height: 40,
     borderBottomWidth: 1,
     borderColor: '#fff',
-    marginBottom: 30,
-    color: '#fff'
+    marginBottom: 35,
+    color: '#fff',
+    fontSize: 16
   },
   button: {
     backgroundColor: '#59cbbd',

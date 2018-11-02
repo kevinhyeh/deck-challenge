@@ -19,7 +19,7 @@ class MyDeckScreen extends Component {
   };
 
   load = () => {
-    fetch('http://192.168.1.72:3001/selectFavorites', {
+    fetch('http://localhost:3001/selectFavorites', {
       method: 'POST'
     }).then(res => res.json())
     .then(resultingJSON => this.setState({ workoutHistory : resultingJSON }))

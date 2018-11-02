@@ -32,7 +32,7 @@ class WorkoutScreen extends Component {
   };
 
   fetchWorkouts = () => {
-    fetch('http://192.168.1.72:3001/workouts', {
+    fetch('http://localhost:3001/workouts', {
       method: 'POST'
     }).then(res => res.json())
     .then(resultingJSON => this.setState({ initialWorkouts : resultingJSON }))
@@ -40,7 +40,7 @@ class WorkoutScreen extends Component {
 
   fetchAddWorkout = () => {
     if (this.state.addWorkout != '') {
-      fetch('http://192.168.1.72:3001/addWorkout', {
+      fetch('http://localhost:3001/addWorkout', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -56,7 +56,7 @@ class WorkoutScreen extends Component {
   };
 
   fecthFinishWorkout = () => {
-    fetch('http://192.168.1.72:3001/addHistory', {
+    fetch('http://localhost:3001/addHistory', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -65,7 +65,7 @@ class WorkoutScreen extends Component {
       body: JSON.stringify({
         timer: formattedSeconds(this.state.secondsElapsed), 
         difficulty: this.state.selectDifficulty,
-        chosenWorkouts: this.state.chosenWorkouts.join(','),
+        chosenWorkouts: this.state.chosenWorkouts.join(', '),
         deckCompleted: this.state.deckCompleted,
         favorite: this.state.favorite
       })
@@ -74,7 +74,7 @@ class WorkoutScreen extends Component {
 
   loadWorkouts = (num) => {
     this.fetchWorkouts();
-    this.setState({ selectNumber: num })
+    this.setState({ selectNumber: num });
   };
 
   unclickWorkout = (workout) => {
@@ -238,18 +238,18 @@ class WorkoutScreen extends Component {
                       </View>
                     }
                     <View>
-                    <Text style={{ marginLeft: 210, fontSize: 40, transform: [{ rotate: '180deg' }] }}>{currentCard.face}
-                      <View>
-                        { currentCard.suit == 'spades' ?
-                          <Text style={{ fontSize: 38 }}>&#9830;</Text>
-                        : currentCard.suit == 'hearts' ?
-                          <Text style={{ color: 'red', fontSize: 38 }}>&#9829;</Text>
-                        : currentCard.suit == 'clubs' ?
-                          <Text style={{ fontSize: 38 }}>&#9827;</Text>
-                        : <Text style={{ color: 'red', fontSize: 38 }}>&#9830;</Text>
-                        }
-                      </View>
-                    </Text>
+                      <Text style={{ marginLeft: 210, fontSize: 40, transform: [{ rotate: '180deg' }] }}>{currentCard.face}
+                        <View>
+                          { currentCard.suit == 'spades' ?
+                            <Text style={{ fontSize: 38 }}>&#9830;</Text>
+                          : currentCard.suit == 'hearts' ?
+                            <Text style={{ color: 'red', fontSize: 38 }}>&#9829;</Text>
+                          : currentCard.suit == 'clubs' ?
+                            <Text style={{ fontSize: 38 }}>&#9827;</Text>
+                          : <Text style={{ color: 'red', fontSize: 38 }}>&#9830;</Text>
+                          }
+                        </View>
+                      </Text>
                     </View>
                   </View> 
                   <TouchableOpacity style={[styles.shuffleBut, {marginTop: 50}]} onPress={() => this.nextCard()}>
@@ -288,10 +288,10 @@ class WorkoutScreen extends Component {
                 <Text onPress={() => this.exitWorkoutAlert()} style={{ color: 'white' }}>Exit Workout</Text>
                 <Text style={styles.timer}>{formattedSeconds(this.state.secondsElapsed)}</Text>
                 <ImageBackground style={{ width: 300, height: 450, justifyContent: 'center', alignItems: 'center' }}source={require('../assets/cardsBackface.png')}>
-                {/*
+              {/*
                 <Text style={{ color: '#fff', fontSize: 24, fontFamily: 'AvenirNext-HeavyItalic', width: 280 }}>{pickedQuote.quote.toString()}</Text>
                 <Text style={{ color: '#fff', fontSize: 24, fontFamily: 'AvenirNext-Heavy' }}>- {pickedQuote.author}</Text>
-                */}
+              */}
                 </ImageBackground>
                 { this.state.selectDifficulty == 26 ?
                   <TouchableOpacity style={[styles.shuffleBut, {marginTop: 50}]} onPress={() => this.shuffleHalf(cards)}>
@@ -306,13 +306,11 @@ class WorkoutScreen extends Component {
             </View>
           </Modal>
           <View style={styles.section}>
-            <Text style={styles.header}>1. Select Difficulty</Text>
+            <Text style={styles.header}>1. Select Difficulty{this.props.screenProps.newState}</Text>
             <View style={styles.rowContainer}>
-                    {console.log(this.state)}
-
             { difficultyEasy ? (
               <TouchableOpacity style={styles.activeBut}>
-                <Text>Easy</Text>                
+                <Text>Easy</Text>
               </TouchableOpacity>  
               ) : (
               <TouchableOpacity style={styles.inactiveBut} onPress={ selectDifficulty => this.setState({ selectDifficulty: 26 }) }>

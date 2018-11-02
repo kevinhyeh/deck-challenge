@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, ScrollView, TouchableOpacity, Image, TextInput, Button, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
+import PasswordInputText from 'react-native-hide-show-password-input';
 
 import styles from '../styles/Styles';
 
@@ -35,23 +36,32 @@ class SignUpScreen extends Component {
         password: TextInputPassword
       })
     }).then(res => res.json())
+    .then(resultingJSON => {
+      if (resultingJSON == 'Email already used') {
+        Alert.alert(resultingJSON);
+      } else if (resultingJSON == 'Username taken') {
+        Alert.alert(resultingJSON);
+      } else {
+        this.props.navigation.navigate('Login');
+        console.log(resultingJSON)
+      }
+    });
   }
 
   navLoginScreen = () => {
-    {/*
+
     const { TextInputName } = this.state;
     const { TextInputEmail } = this.state;
     const { TextInputUsername } = this.state;
     const { TextInputPassword } = this.state;
 
-    if(TextInputName == '' || TextInputEmail == '' || TextInputUsername == '' || TextInputPassword == '') {
+    if (TextInputName == '' || TextInputEmail == '' || TextInputUsername == '' || TextInputPassword == '') {
       Alert.alert('Please fill all fields');
+    } else if (TextInputEmail.indexOf('@') == -1) {
+      Alert.alert('Please add a valid email');
     } else {
       this.insertIntoMysql();
-      this.props.navigation.navigate('Main');
     }
-    */}
-    this.props.navigation.navigate('Main');
   };
 
   render() {
@@ -71,15 +81,15 @@ class SignUpScreen extends Component {
 
         <TextInput style={styles.input} placeholder="Your Email" placeholderTextColor="#fff" onChangeText={TextInputEmail => this.setState({TextInputEmail})} />
 
-        <TextInput style={styles.input} placeholder="Username" placeholderTextColor="#fff" onChangeText={TextInputUsername => this.setState({TextInputUsername})} />
+        <TextInput style={[styles.input, {marginBottom: 0}]} placeholder="Username" placeholderTextColor="#fff" onChangeText={TextInputUsername => this.setState({TextInputUsername})} />
 
-        <TextInput style={styles.input} placeholder="Password" placeholderTextColor="#fff" onChangeText={TextInputPassword => this.setState({TextInputPassword})} />
+        <PasswordInputText style={styles.input} placeholder="Password" placeholderTextColor="#fff" onChangeText={TextInputPassword => this.setState({TextInputPassword})} />
 
         <TouchableOpacity style={styles.button} onPress={this.navLoginScreen}>
         <Text style={styles.btnText}>Sign Up</Text>
         </TouchableOpacity>
 
-        <Text style={styles.help}>Already have an account? <Text style={styles.helpBtn} onPress={() => navigate('Login')}>Login</Text>
+        <Text style={styles.help}>Already have an account?{this.props.navigation.state.params} <Text style={styles.helpBtn} onPress={() => navigate('Login')}>Login</Text>
         </Text> 
 
         </View>

@@ -28,7 +28,8 @@ const WorkoutNav = createStackNavigator({
     navigationOptions: {
       headerStyle: {
         backgroundColor: '#59cbbd'
-      }
+      },
+      headerTintColor: '#fff'
     }
   }
 })

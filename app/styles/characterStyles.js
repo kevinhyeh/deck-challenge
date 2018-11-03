@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 const characterStyles = StyleSheet.create({
   workoutContainer: {
     flex: 1,
-    backgroundColor: '#36485f'
+    backgroundColor: '#4A6382'
   },
   image: {
     width: 100,
@@ -81,7 +81,7 @@ const characterStyles = StyleSheet.create({
   break: {
     width: 20,
     height: 70,
-    backgroundColor: '#36485f',
+    backgroundColor: '#4A6382',
     position: 'absolute',
     top: 80,
     left: -10,

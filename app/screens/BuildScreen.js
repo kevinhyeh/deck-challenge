@@ -244,7 +244,7 @@ class BuildScreen extends Component {
                       <Text style={{ marginLeft: 210, fontSize: 40, transform: [{ rotate: '180deg' }] }}>{currentCard.face}
                         <View>
                           { currentCard.suit == 'spades' ?
-                            <Text style={{ fontSize: 38 }}>&#9830;</Text>
+                            <Text style={{ fontSize: 38 }}>&#9824;</Text>
                           : currentCard.suit == 'hearts' ?
                             <Text style={{ color: 'red', fontSize: 38 }}>&#9829;</Text>
                           : currentCard.suit == 'clubs' ?

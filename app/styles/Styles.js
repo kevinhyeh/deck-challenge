@@ -3,22 +3,22 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#36485f',
+    backgroundColor: '#4A6382',
     justifyContent: 'center',
-    paddingLeft: 60,
-    paddingRight: 60
+    alignItems: 'center'
   },
   form: {
     alignSelf: 'stretch'
   },
   header: {
-    fontSize: 26,
+    fontSize: 40,
     color: '#59cbbd',
     paddingBottom: 10,
     marginTop: 20,
     marginBottom: 20,
     borderBottomColor: '#fff',
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
+    fontFamily: 'Copperplate-Bold'
   },
   input: {
     alignSelf: 'stretch',
@@ -60,9 +60,22 @@ const styles = StyleSheet.create({
   },
   menu: {
     flex: 1,
-    backgroundColor: '#36485f',
+    backgroundColor: '#4A6382',
     paddingLeft: 60,
     paddingRight: 60
+  },
+  card: {
+    backgroundColor: '#FCFCF8',
+    width: 380,
+    height: 600,
+    borderRadius: 20,
+    paddingRight: 30,
+    paddingLeft: 30,
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 0},
+    shadowOpacity: 0.6,
+    shadowRadius: 20
   }
 })
 

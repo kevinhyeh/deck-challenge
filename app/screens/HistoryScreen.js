@@ -82,7 +82,7 @@ class HistoryScreen extends Component {
     });
     
     return (
-      <ScrollView style={{ backgroundColor: '#36485f' }} contentInsetAdjustmentBehavior="automatic">
+      <ScrollView style={{ backgroundColor: '#4A6382' }} contentInsetAdjustmentBehavior="automatic">
         <SafeAreaView style={{ alignItems: 'center' }}>
         { this.state.workoutHistory.length > 0 ?
           [workoutHistory]

@@ -154,7 +154,6 @@ class BuildScreen extends Component {
 
   finishWorkout = () => {
     this.setState({ deckCompleted: true });
-    console.log(this.state)
     this.fecthFinishWorkout();
     this.resetState();
   };
@@ -303,7 +302,7 @@ class BuildScreen extends Component {
                   <Text style={{color: '#fff', fontSize: 24 }} onPress={() => this.shuffleHalf(cards)}>Start Workout</Text>
                   </TouchableOpacity>
                 : <TouchableOpacity style={[styles.shuffleBut, {marginTop: 50}]} onPress={() => this.shuffleFull(cards)}>
-                  <Text style={{color: '#fff', fontSize: 24 }} onPress={() => this.shuffleHalf(cards)}>Start Workout</Text>
+                  <Text style={{color: '#fff', fontSize: 24 }} onPress={() => this.shuffleFull(cards)}>Start Workout</Text>
                   </TouchableOpacity>
                 }
                 </View>

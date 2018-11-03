@@ -42,7 +42,7 @@ class WorkoutScreen extends Component {
     return (
       <SafeAreaView style={[styles.workoutContainer, { alignItems: 'center' }]}>
           <InstructionsModal closeModal={() => this.setModalVisibility(false)} visible={this.state.modalVisibility} />
-          <Text style={{ color: '#fff', marginBottom: 20, fontSize: 46 }}>Welcome {this.props.screenProps.username}!</Text>
+          <Text style={{ color: '#59cbbd', marginBottom: 20, fontSize: 46 }}>Welcome {this.props.screenProps.username}!</Text>
           <View style={{marginBottom: 40, flexDirection: 'row', justifyContent: 'space-between', width: 300}}>
             <View style={styles.stats}>
               <Text style={{ color: '#fff', fontSize: 16 }}>Decks Created:</Text>

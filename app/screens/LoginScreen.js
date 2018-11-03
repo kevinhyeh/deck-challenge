@@ -66,7 +66,6 @@ class LoginScreen extends Component {
         <TextInput style={[styles.input, {marginBottom: 0}]} placeholder="Username" placeholderTextColor="#fff" onChangeText={TextInputUsername => this.setState({TextInputUsername})} />
 
         <PasswordInputText style={styles.input} placeholder="Password" placeholderTextColor="#fff" onChangeText={TextInputPassword => this.setState({TextInputPassword})} />
-        {console.log(this.props.screenProps.user_id)}
         <TouchableOpacity style={styles.button} onPress={() => this.login()}>
         <Text style={styles.btnText}>Enter</Text>
         </TouchableOpacity>

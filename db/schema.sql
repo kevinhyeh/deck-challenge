@@ -20,7 +20,7 @@ CREATE TABLE history(
   date_completed DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
   timer VARCHAR(45) NOT NULL,
   difficulty INT NOT NULL,
-  chosen_workouts VARCHAR(45) NOT NULL,
+  chosen_workouts VARCHAR(100) NOT NULL,
   deck_completed BOOLEAN DEFAULT FALSE,
   favorite BOOLEAN DEFAULT FALSE,
   user_id INT NOT NULL,

@@ -19,7 +19,7 @@ class LoginScreen extends Component {
     const { TextInputUsername } = this.state;
     const { TextInputPassword } = this.state;
 
-    fetch('http://192.168.1.72:3001/login', {
+    fetch('http://localhost:3001/login', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

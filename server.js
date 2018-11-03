@@ -78,8 +78,8 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/stats', (req, res) => {
-  connection.query("SELECT * FROM history", (err, data1) => {
-    connection.query("SELECT * FROM history WHERE deck_completed = 1", (err, data2) => {
+  connection.query("SELECT * FROM history WHERE user_id = ?", req.body.user_id, (err, data1) => {
+    connection.query("SELECT * FROM history WHERE user_id = ? AND deck_completed = 1", req.body.user_id, (err, data2) => {
       let stats = {
         created: data1.length,
         completed: data2.length
@@ -94,6 +94,17 @@ app.post('/bestDeck', (req, res) => {
     res.json(data[0]);
   });
 });
+
+// app.post('/bestDeck', (req, res) => {
+//   connection.query("SELECT * FROM history WHERE user_id = ? AND deck_completed = 1 AND difficulty = 26 ORDER BY timer", req.body.user_id, (err, data1) => {
+//     connection.query("SELECT * FROM history WHERE user_id = ? AND deck_completed = 1 AND difficulty = 52 ORDER BY timer", req.body.user_id, (err, data2) => {
+//       let best = {
+//         bestEasy: data1,
+//         bestHard: data2
+//       }
+//     });
+//   });
+// });
 
 app.post('/workouts', (req, res) => {
   connection.query("SELECT * FROM workouts", (err, data) => {

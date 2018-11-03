@@ -23,7 +23,7 @@ class SignUpScreen extends Component {
     const { TextInputUsername } = this.state;
     const { TextInputPassword } = this.state;
 
-    fetch('http://192.168.1.72:3001/signup', {
+    fetch('http://localhost:3001/signup', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

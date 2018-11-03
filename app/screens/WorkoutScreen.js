@@ -26,7 +26,14 @@ class WorkoutScreen extends Component {
 
   loadStats = () => {
     fetch('http://localhost:3001/stats', {
-      method: 'POST'
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user_id: this.props.screenProps.user_id
+      })
     }).then(res => res.json())
     .then(resultingJSON => this.setState({
       decksCreated: resultingJSON.created,
@@ -42,7 +49,7 @@ class WorkoutScreen extends Component {
     return (
       <SafeAreaView style={[styles.workoutContainer, { alignItems: 'center' }]}>
           <InstructionsModal closeModal={() => this.setModalVisibility(false)} visible={this.state.modalVisibility} />
-          <Text style={{ color: '#59cbbd', marginBottom: 20, fontSize: 46 }}>Welcome {this.props.screenProps.username}!</Text>
+          <Text style={{ color: '#59cbbd', marginBottom: 20, fontSize: 46, fontFamily: 'Copperplate-Bold', textAlign: 'center' }}>WELCOME{"\n"}{this.props.screenProps.username.toUpperCase()}!</Text>
           <View style={{marginBottom: 40, flexDirection: 'row', justifyContent: 'space-between', width: 300}}>
             <View style={styles.stats}>
               <Text style={{ color: '#fff', fontSize: 16 }}>Decks Created:</Text>

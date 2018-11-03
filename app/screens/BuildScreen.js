@@ -193,7 +193,7 @@ class BuildScreen extends Component {
                     <Text style={{ marginLeft: 30, width: 300, fontSize: 40 }}>{currentCard.face}
                       <View>
                         { currentCard.suit == 'spades' ?
-                          <Text style={{ fontSize: 38 }}>&#9830;</Text>
+                          <Text style={{ fontSize: 38 }}>&#9824;</Text>
                         : currentCard.suit == 'hearts' ?
                           <Text style={{ color: 'red', fontSize: 38 }}>&#9829;</Text>
                         : currentCard.suit == 'clubs' ?
@@ -297,22 +297,22 @@ class BuildScreen extends Component {
             <View style={styles.rowContainer}>
             { difficultyEasy ? (
               <TouchableOpacity style={styles.activeBut}>
-                <Text>Easy</Text>
+                <Text>Easy(26)</Text>
               </TouchableOpacity>  
               ) : (
               <TouchableOpacity style={styles.inactiveBut} onPress={ selectDifficulty => this.setState({ selectDifficulty: 26 }) }>
-                <Text>Easy</Text>
+                <Text>Easy(26)</Text>
               </TouchableOpacity>
               )
             }        
             { difficultyHard ? (
               <TouchableOpacity style={styles.activeBut}>
-                <Text>Hard</Text>
+                <Text>Hard(52)</Text>
               }
               </TouchableOpacity>  
               ) : (
               <TouchableOpacity style={styles.inactiveBut} onPress={ selectDifficulty => this.setState({ selectDifficulty: 52 }) }>
-                <Text>Hard</Text>
+                <Text>Hard(52)</Text>
               </TouchableOpacity>
               )
             }

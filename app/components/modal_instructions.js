@@ -32,10 +32,10 @@ const Instructions = (props) => {
                 <Text style={{ color: '#fff', fontSize: 20, fontFamily: 'AvenirNext-Heavy' }}>How To Build</Text>
                 <Text style={modalStyles.text}>Step One: Select Difficulty</Text>
                 <View style={{ flexDirection: 'row', marginBottom: 20 }}>
-                  <View style={styles.inactiveBut}>
+                  <View style={[styles.inactiveBut, {backgroundColor: '#fff'}]}>
                     <Text>Easy</Text>
                   </View>
-                  <View style={styles.inactiveBut}>
+                  <View style={[styles.inactiveBut, {backgroundColor: '#fff'}]}>
                     <Text>Hard</Text>
                   </View>
                 </View>
@@ -50,10 +50,10 @@ const Instructions = (props) => {
               <View style={{ alignItems: 'center' }}>
                 <Text style={modalStyles.text}>Step Two: Select Number</Text>
                 <View style={{ flexDirection: 'row', marginBottom: 20 }}>
-                  <View style={styles.inactiveBut}>
+                  <View style={[styles.inactiveBut, {backgroundColor: '#fff'}]}>
                     <Text>2</Text>
                   </View>
-                  <View style={styles.inactiveBut}>
+                  <View style={[styles.inactiveBut, {backgroundColor: '#fff'}]}>
                     <Text>4</Text>
                   </View>
                 </View>
@@ -68,10 +68,10 @@ const Instructions = (props) => {
               <View style={{ alignItems: 'center' }}>
                 <Text style={modalStyles.text}>Step Three: Select Workouts</Text>
                 <View style={{ flexDirection: 'row', marginBottom: 20 }}>
-                  <View style={styles.inactiveBut}>
+                  <View style={[styles.inactiveBut, {backgroundColor: '#fff'}]}>
                     <Text>Push Ups</Text>
                   </View>
-                  <View style={styles.inactiveBut}>
+                  <View style={[styles.inactiveBut, {backgroundColor: '#fff'}]}>
                     <Text>Sit Ups</Text>
                   </View>
                 </View>

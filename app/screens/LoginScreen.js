@@ -56,21 +56,22 @@ class LoginScreen extends Component {
 
     return (
       <View style={styles.container}>
+        <View style={styles.card}>
+          <View style={styles.form}>
 
-        <View style={styles.form}>
+          <Icon size={40} name="home" color="#4A6382" underlayColor="rgba(255,255,255,0)" onPress={() => navigate('Home')} />
 
-        <Icon size={40} name="home" color="#fff" underlayColor="rgba(255,255,255,0)" onPress={() => navigate('Home')} />
+          <Text style={styles.header}>Welcome</Text>
 
-        <Text style={styles.header}>Welcome</Text>
+          <TextInput style={[styles.input, {marginBottom: 0}]} placeholder="Username" placeholderTextColor="#4A6382" onChangeText={TextInputUsername => this.setState({TextInputUsername})} />
 
-        <TextInput style={[styles.input, {marginBottom: 0}]} placeholder="Username" placeholderTextColor="#fff" onChangeText={TextInputUsername => this.setState({TextInputUsername})} />
-
-        <PasswordInputText style={styles.input} placeholder="Password" placeholderTextColor="#fff" onChangeText={TextInputPassword => this.setState({TextInputPassword})} />
-        <TouchableOpacity style={styles.button} onPress={() => this.login()}>
-        <Text style={styles.btnText}>Enter</Text>
-        </TouchableOpacity>
-        <Text style={styles.help}>Don't have an account? <Text style={styles.helpBtn} onPress={() => navigate('SignUp')}>Sign Up</Text>
-        </Text> 
+          <PasswordInputText style={styles.input} placeholder="Password" placeholderTextColor="#4A6382" onChangeText={TextInputPassword => this.setState({TextInputPassword})} />
+          <TouchableOpacity style={styles.button} onPress={() => this.login()}>
+          <Text style={styles.btnText}>Enter</Text>
+          </TouchableOpacity>
+          <Text style={styles.help}>Don't have an account? <Text style={styles.helpBtn} onPress={() => navigate('SignUp')}>Sign Up</Text>
+          </Text> 
+          </View>
         </View>
       </View>
     );

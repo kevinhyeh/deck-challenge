@@ -70,28 +70,29 @@ class SignUpScreen extends Component {
 
     return (
       <View style={styles.container}>
+        <View style={styles.card}>
+          <View style={styles.form}>
 
-        <View style={styles.form}>
+          <Icon size={40} name="home" color="#4A6382" underlayColor="rgba(255,255,255,0)" onPress={() => navigate('Home')} />
 
-        <Icon size={40} name="home" color="#fff" underlayColor="rgba(255,255,255,0)" onPress={() => navigate('Home')} />
+          <Text style={styles.header}>Register</Text>
 
-        <Text style={styles.header}>Register</Text>
+          <TextInput style={styles.input} returnKeyType={ 'next' } placeholder="Your Name" placeholderTextColor="#4A6382" onChangeText={TextInputName => this.setState({TextInputName})} />
 
-        <TextInput style={styles.input} returnKeyType={ 'next' } placeholder="Your Name" placeholderTextColor="#fff" onChangeText={TextInputName => this.setState({TextInputName})} />
+          <TextInput style={styles.input} placeholder="Your Email" placeholderTextColor="#4A6382" onChangeText={TextInputEmail => this.setState({TextInputEmail})} />
 
-        <TextInput style={styles.input} placeholder="Your Email" placeholderTextColor="#fff" onChangeText={TextInputEmail => this.setState({TextInputEmail})} />
+          <TextInput style={[styles.input, {marginBottom: 0}]} placeholder="Username" placeholderTextColor="#4A6382" onChangeText={TextInputUsername => this.setState({TextInputUsername})} />
 
-        <TextInput style={[styles.input, {marginBottom: 0}]} placeholder="Username" placeholderTextColor="#fff" onChangeText={TextInputUsername => this.setState({TextInputUsername})} />
+          <PasswordInputText style={styles.input} placeholder="Password" placeholderTextColor="#4A6382" onChangeText={TextInputPassword => this.setState({TextInputPassword})} />
 
-        <PasswordInputText style={styles.input} placeholder="Password" placeholderTextColor="#fff" onChangeText={TextInputPassword => this.setState({TextInputPassword})} />
+          <TouchableOpacity style={styles.button} onPress={this.navLoginScreen}>
+          <Text style={styles.btnText}>Sign Up</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={this.navLoginScreen}>
-        <Text style={styles.btnText}>Sign Up</Text>
-        </TouchableOpacity>
+          <Text style={styles.help}>Already have an account?{this.props.navigation.state.params} <Text style={styles.helpBtn} onPress={() => navigate('Login')}>Login</Text>
+          </Text> 
 
-        <Text style={styles.help}>Already have an account?{this.props.navigation.state.params} <Text style={styles.helpBtn} onPress={() => navigate('Login')}>Login</Text>
-        </Text> 
-
+          </View>
         </View>
       </View>
     );

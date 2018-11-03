@@ -24,9 +24,9 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     height: 40,
     borderBottomWidth: 1,
-    borderColor: '#fff',
+    borderColor: '#4A6382',
     marginBottom: 35,
-    color: '#fff',
+    color: '#4A6382',
     fontSize: 16
   },
   button: {
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
   help: {
     alignSelf: 'stretch',
-    color: '#fff',
+    color: '#4A6382',
     fontSize: 16,
     marginTop: 20
   },

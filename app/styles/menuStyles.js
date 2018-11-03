@@ -3,18 +3,23 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   menuContainer: {
     flex: 1,
-    backgroundColor: '#eee'
+    backgroundColor: '#4A6382',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   center: {
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#777',
-    padding: 20
+    justifyContent: 'center',
+    width: 300,
+    height: 450,
+    borderWidth: 5,
+    borderColor: '#fff',
+    borderRadius: 20
   },
   image: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 150,
+    height: 150,
+    marginBottom: 20
   },
   rowContainer: {
     flexDirection: 'row',
@@ -24,7 +29,8 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 24,
     paddingTop: 5,
-    color: '#000'
+    color: '#59cbbd',
+    fontFamily: 'Copperplate-Bold'
   }
 })
 

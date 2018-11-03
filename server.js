@@ -66,7 +66,13 @@ app.post('/login', (req, res) => {
     } else if (!bcrypt.compareSync(req.body.password, data[0].password)) {
       res.json('Invalid password');
     } else {
-      res.json({ user_id: data[0].id, message: 'Logged In'});
+      res.json({ 
+        user_id: data[0].id, 
+        user: data[0].user,
+        email: data[0].email,
+        username: data[0].username,
+        message: 'Logged In'
+      });
     }
   });
 });
@@ -80,6 +86,12 @@ app.post('/stats', (req, res) => {
       }
       res.json(stats);
     })
+  });
+});
+
+app.post('/bestDeck', (req, res) => {
+  connection.query("SELECT * FROM history WHERE user_id = ? AND deck_completed = 1 ORDER BY timer", req.body.user_id, (err, data) => {
+    res.json(data[0]);
   });
 });
 
@@ -110,10 +122,16 @@ app.post('/updateFavorite', (req, res) => {
 });
 
 app.post('/addWorkout', (req, res) => {
-  console.log(req.body.workout);
-  connection.query("INSERT INTO workouts (workout) VALUES (?)", req.body.workout, (err, data) => {
-    res.json(data);
-  });
+  connection.query("SELECT * FROM workouts WHERE workout = ?", req.body.addWorkout, (err, data) => {
+    if (data.length == 0) {
+      connection.query("INSERT INTO workouts (workout) VALUES (?)", req.body.addWorkout, (err, data) => {
+        res.json(data);
+      });
+    } else {
+      res.json('Workout already exists');
+    }
+  })
+  
 });
 
 app.post('/addHistory', (req, res) => {

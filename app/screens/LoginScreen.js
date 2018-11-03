@@ -37,6 +37,8 @@ class LoginScreen extends Component {
         Alert.alert(resultingJSON);
       } else {
         this.props.screenProps.user_id = resultingJSON.user_id;
+        this.props.screenProps.user = resultingJSON.user;
+        this.props.screenProps.email = resultingJSON.email
         this.props.screenProps.username = resultingJSON.username;
         this.props.navigation.navigate('Main');
       }
@@ -44,10 +46,10 @@ class LoginScreen extends Component {
   }
 
   login = () => {
-    {/*
     this.loginIntoMysql();
-    */}
+    {/*
     this.props.navigation.navigate('Main');
+    */}
   }
 
   render() {

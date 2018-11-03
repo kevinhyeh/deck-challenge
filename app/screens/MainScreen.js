@@ -42,10 +42,22 @@ const MenuNav = createStackNavigator({
     }
   },
   Profile: { 
-    screen: ProfileScreen
+    screen: ProfileScreen,
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: '#59cbbd'
+      },
+      headerTintColor: '#fff'
+    }
   },
   Settings: { 
-    screen: SettingsScreen
+    screen: SettingsScreen,
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: '#59cbbd'
+      },
+      headerTintColor: '#fff'
+    }
   }
 })
 

@@ -41,23 +41,6 @@ class BuildScreen extends Component {
     .then(resultingJSON => this.setState({ initialWorkouts : resultingJSON }))
   };
 
-  fetchAddWorkout = () => {
-    if (this.state.addWorkout != '') {
-      fetch('http://localhost:3001/addWorkout', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          workout: this.state.addWorkout
-        })
-      }).then(res => res.json())
-    } else {
-      Alert.alert('Enter a workout');
-    };
-  };
-
   fecthFinishWorkout = () => {
     fetch('http://localhost:3001/addHistory', {
       method: 'POST',

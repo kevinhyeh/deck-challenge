@@ -11,7 +11,7 @@ import ProfileScreen from './screens/ProfileScreen';
 class App extends Component {
   render() {
     return (
-      <AppStackNavigator screenProps={{ user_id: 2, username: 'Giraffe' }} />
+      <AppStackNavigator screenProps={{ user_id: 0, user: '', email: '', username: '' }} />
     );
   }
 }

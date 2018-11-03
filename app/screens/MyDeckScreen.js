@@ -62,6 +62,10 @@ class MyDeckScreen extends Component {
         borderWidth: 6, 
         paddingLeft: 7,
         paddingRight: 7,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 0},
+        shadowOpacity: 0.6,
+        shadowRadius: 20,
         borderColor: workout.deck_completed ? '#40E55D' : 'red' }}>
         { workout.deck_completed == 1 ? 
           <Text style={{ fontSize: 40, color: '#40E55D', marginBottom: 30 }}>Completed</Text>

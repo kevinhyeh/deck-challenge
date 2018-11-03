@@ -99,7 +99,7 @@ const workoutStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: '#59cbbd',
-    borderWidth: 6
+    borderWidth: 6,
   },
   stats: {
     padding: 8,

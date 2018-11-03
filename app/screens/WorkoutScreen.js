@@ -13,11 +13,26 @@ class WorkoutScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      decksBuilt: 0,
+      decksCreated: 0,
       decksCompleted: 0,
       modalVisibility: false
     }
-  }
+  };
+
+  componentDidMount() {
+    this.loadStats();
+    this.props.navigation.addListener('willFocus', this.loadStats);
+  };
+
+  loadStats = () => {
+    fetch('http://localhost:3001/stats', {
+      method: 'POST'
+    }).then(res => res.json())
+    .then(resultingJSON => this.setState({
+      decksCreated: resultingJSON.created,
+      decksCompleted: resultingJSON.completed
+    }))
+  };
 
   setModalVisibility = (visible) => {
     this.setState({ modalVisibility: visible })
@@ -30,8 +45,8 @@ class WorkoutScreen extends Component {
           <Text style={{ color: '#fff', marginBottom: 20, fontSize: 46 }}>Welcome {this.props.screenProps.username}!</Text>
           <View style={{marginBottom: 40, flexDirection: 'row', justifyContent: 'space-between', width: 300}}>
             <View style={styles.stats}>
-              <Text style={{ color: '#fff', fontSize: 16 }}>Decks Built:</Text>
-              <Text style={{ color: '#fff', fontSize: 16 }}>{this.state.decksBuilt}</Text>
+              <Text style={{ color: '#fff', fontSize: 16 }}>Decks Created:</Text>
+              <Text style={{ color: '#fff', fontSize: 16 }}>{this.state.decksCreated}</Text>
             </View>
             <View style={styles.stats}>
               <Text style={{ color: '#fff', fontSize: 16 }}>Decks Completed:</Text>

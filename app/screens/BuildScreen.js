@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Text, View, ScrollView, TouchableOpacity, ImageBackground, TextInput, Button, SafeAreaView, Alert, Modal, Dimensions } from 'react-native';
 import { Icon } from 'react-native-elements';
 
+import TimerExit from '../components/deck_timer_exit';
+import FinishScreen from '../components/deck_finishScreen';
+
 import styles from '../styles/WorkoutStyles';
 import cards from '../cards.json';
 import quotes from '../quotes.json';
@@ -25,7 +28,7 @@ class BuildScreen extends Component {
       shuffledDeck: [],
       secondsElapsed: 0,
       finishedCount: 0,
-      deckCompleted: true,
+      deckCompleted: true
     };
     this.incrementer = null;
     this.initialState = this.state;
@@ -127,14 +130,14 @@ class BuildScreen extends Component {
 
   exitWorkoutAlert = () => {
     Alert.alert(
-          'Leaving Workout',
-          'Are you sure?',
-          [
-            {text: 'No', onPress: () => console.log('Cancel Pressed!')},
-            {text: 'Yes', onPress: () => this.exitWorkout()},
-          ],
-          { cancelable: false }
-        )
+      'Leaving Workout',
+      'Are you sure?',
+      [
+        {text: 'No', onPress: () => console.log('Cancel Pressed!')},
+        {text: 'Yes', onPress: () => this.exitWorkout()},
+      ],
+      { cancelable: false }
+    )
   };
 
   exitWorkout = () => {
@@ -201,9 +204,7 @@ class BuildScreen extends Component {
             <View style={styles.modal}>
               { this.state.shuffledDeck.length > 0 ? 
                 <View style={{ alignItems: 'center' }}>
-                  <Text onPress={() => this.exitWorkoutAlert()} style={{ color: 'white' }}>Exit Workout</Text>
-                  {console.log(this.props.screenProps.user_id)}
-                  <Text style={styles.timer}>{formattedSeconds(this.state.secondsElapsed)}</Text>
+                  <TimerExit exit={() => this.exitWorkoutAlert()} timer={formattedSeconds(this.state.secondsElapsed)} />
                   <View style={styles.workoutCards}>
                     <Text style={{ fontSize: 20 }}>{this.state.shuffledDeck.length}/{this.state.selectDifficulty}</Text>
                     <View>
@@ -260,13 +261,15 @@ class BuildScreen extends Component {
                   </TouchableOpacity>
                 </View>
               : this.state.finishedCount == this.state.selectDifficulty ?
-                  <View style={styles.workoutCards}>
-                    <Text>Congrats!</Text>
-                    <Text>You finished with a time of</Text>
-                    <Text>{formattedSeconds(this.state.secondsElapsed)}</Text>
-                    <Text>Add this workout to your favorites?</Text>
+                  /*
+                  <FinishScreen timer={formattedSeconds(this.state.secondsElapsed)} favoritesState={this.state.favorites} favoritesFunc={() => this.setState({ favorites: callback })} finishWorkout={() => this.finishWorkout()}) />*/
+                  <View style={[styles.workoutCards, {backgroundColor: '#36485f'}]}>
+                    <Text style={[styles.congrats, {marginBottom: 30}]}>Congrats!</Text>
+                    <Text style={{ color: '#fff', fontSize: 20 }}>You finished with a time of</Text>
+                    <Text style={{ fontSize: 50, color: '#fff', marginBottom: 20 }}>{formattedSeconds(this.state.secondsElapsed)}</Text>
+                    <Text style={{ color: '#fff', fontSize: 20 }}>Add to favorites?</Text>
                     <View style={{ flexDirection: 'row' }}>
-                    { this.state.favorites == true ?
+                    { this.state.favorite == true ?
                       <TouchableOpacity style={styles.activeBut}>
                       <Text>Yes</Text>
                       </TouchableOpacity>
@@ -274,7 +277,7 @@ class BuildScreen extends Component {
                       <Text>Yes</Text>
                       </TouchableOpacity>
                     }
-                    { this.state.favorites == false ?
+                    { this.state.favorite == false ?
                       <TouchableOpacity style={styles.activeBut}>
                       <Text>No</Text>
                       </TouchableOpacity>
@@ -283,13 +286,12 @@ class BuildScreen extends Component {
                       </TouchableOpacity>
                     }
                     </View>
-                    <TouchableOpacity>
-                    <Text onPress={() => this.finishWorkout()}>Finish Workout</Text>
+                    <TouchableOpacity onPress={() => this.finishWorkout()} style={styles.shuffleBut}>
+                    <Text style={{ color: '#fff', fontSize: 18 }}>End Workout</Text>
                     </TouchableOpacity>
                   </View>
               : <View style={{ alignItems: 'center' }}>
-                <Text onPress={() => this.exitWorkoutAlert()} style={{ color: 'white' }}>Exit Workout</Text>
-                <Text style={styles.timer}>{formattedSeconds(this.state.secondsElapsed)}</Text>
+                <TimerExit exit={() => this.exitWorkoutAlert()} timer={formattedSeconds(this.state.secondsElapsed)} />
                 <ImageBackground style={{ width: 300, height: 450, justifyContent: 'center', alignItems: 'center' }}source={require('../assets/cardsBackface.png')}>
               {/*
                 <Text style={{ color: '#fff', fontSize: 24, fontFamily: 'AvenirNext-HeavyItalic', width: 280 }}>{pickedQuote.quote.toString()}</Text>

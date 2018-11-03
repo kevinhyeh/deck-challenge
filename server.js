@@ -71,6 +71,17 @@ app.post('/login', (req, res) => {
   });
 });
 
+app.post('/stats', (req, res) => {
+  connection.query("SELECT * FROM history", (err, data1) => {
+    connection.query("SELECT * FROM history WHERE deck_completed = 1", (err, data2) => {
+      let stats = {
+        created: data1.length,
+        completed: data2.length
+      }
+      res.json(stats);
+    })
+  });
+});
 
 app.post('/workouts', (req, res) => {
   connection.query("SELECT * FROM workouts", (err, data) => {

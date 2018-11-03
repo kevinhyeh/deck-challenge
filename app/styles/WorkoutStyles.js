@@ -107,6 +107,10 @@ const workoutStyles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  congrats: {
+    fontSize: 40,
+    color: '#fff'
   }
 });
 

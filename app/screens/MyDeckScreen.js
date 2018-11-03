@@ -13,7 +13,7 @@ class MyDeckScreen extends Component {
     }
   }
 
-  componentWillMount() {
+  componentWDidMount() {
     this.load();
     this.props.navigation.addListener('willFocus', this.load);
   };

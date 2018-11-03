@@ -15,7 +15,7 @@ class HistoryScreen extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.load();
     this.props.navigation.addListener('willFocus', this.load);
   };

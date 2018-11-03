@@ -10,7 +10,8 @@ class HistoryScreen extends Component {
     super(props);
     this.state = {
       workoutHistory: [],
-      favorite: true
+      favorite: true,
+      refreshScreen: 0
     }
   }
 
@@ -33,7 +34,7 @@ class HistoryScreen extends Component {
     .then(resultingJSON => this.setState({ workoutHistory : resultingJSON }))
   };
 
-  favorite = () => {
+  favorite = (id, fav) => {
     fetch('http://localhost:3001/updateFavorite', {
       method: 'POST',
       headers: {
@@ -41,27 +42,37 @@ class HistoryScreen extends Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        favorite: this.state.favorite
+        id: id,
+        favorite: fav
       })
-    }).then(res => res.json());
+    }).then(res => res.json())
+    .then(resultingJSON => this.setState({ refreshScreen: 1 }));
+    this.props.navigation.navigate('MyDeck');
   };  
 
   render() {
 
     const workoutHistory = this.state.workoutHistory.map(workout => {
       return <View key={workout.id} style={{ width: 300, height: 450, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center', marginTop: 10, borderRadius: 20, borderWidth: 6, borderColor: workout.deck_completed ? 'green' : 'red' }}>
-        <Text>{workout.id}</Text>
-        <Text>{workout.deck_completed}</Text>
-        <Text>{workout.timer}</Text>
-        <Text>{workout.difficulty}</Text>
-        <Text>{workout.chosen_workouts}</Text>
-        <Text onPress={() => this.favorite()} style={{ fontSize: 30 }}>&#9829;</Text>
-        <Text>{this.props.screenProps.user_id}</Text>
+        { workout.favorite == 1 ?
+          <Text onPress={() => this.favorite(workout.id, false)} style={{ fontSize: 30 }}>&#9829;</Text>
+        : 
+          <Text onPress={() => this.favorite(workout.id, true)} style={{ fontSize: 30 }}>&#x2661;</Text>
+        }
+        { workout.deck_completed == 1 ? 
+          <Text style={{ fontSize: 40, color: 'green' }}>Completed</Text>
+        : <Text style={{ fontSize: 40, color: 'red' }}>Incompleted</Text>
+        }
+        <Text>{workout.date_completed.split('T')[0]}</Text>
+        <Text style={{ fontSize: 22 }}>Time: {workout.timer}</Text>
+        <Text style={{ fontSize: 22 }}>Difficulty: {workout.difficulty}</Text>
+        <Text style={{ fontSize: 22 }}>Chosen Workouts:</Text>
+        <Text style={{ fontSize: 22 }}>{workout.chosen_workouts}</Text>
       </View>
     });
     
     return (
-      <ScrollView style={{ backgroundColor: '#36485f' }}contentInsetAdjustmentBehavior="automatic">
+      <ScrollView style={{ backgroundColor: '#36485f' }} contentInsetAdjustmentBehavior="automatic">
         <SafeAreaView style={{ alignItems: 'center' }}>
           {workoutHistory}
         </SafeAreaView>

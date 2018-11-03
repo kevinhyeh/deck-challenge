@@ -93,7 +93,9 @@ app.post('/selectFavorites', (req, res) => {
 app.post('/updateFavorite', (req, res) => {
   let favorite = req.body.favorite;
   let id = req.body.id;
-  connection.query("UPDATE history SET favorite = ? WHERE id = ?", [favorite, id]);
+  connection.query("UPDATE history SET favorite = ? WHERE id = ?", [favorite, id], (err, data) => { 
+    res.json(data);
+  });
 });
 
 app.post('/addWorkout', (req, res) => {

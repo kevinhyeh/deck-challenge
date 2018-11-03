@@ -73,7 +73,7 @@ const workoutStyles = StyleSheet.create({
   shuffleBut: {
     padding: 12,
     backgroundColor: '#59cbbd',
-    borderRadius: 50,
+    borderRadius: 20,
     marginTop: 20
   },
   shuffleText: {
@@ -100,6 +100,13 @@ const workoutStyles = StyleSheet.create({
     justifyContent: 'center',
     borderColor: '#59cbbd',
     borderWidth: 6
+  },
+  stats: {
+    padding: 8,
+    borderRadius: 5,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 

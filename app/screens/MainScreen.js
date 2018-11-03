@@ -5,6 +5,7 @@ import { createStackNavigator } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 
 import WorkoutScreen from './WorkoutScreen';
+import BuildScreen from './BuildScreen';
 import HistoryScreen from './HistoryScreen';
 import OutfitScreen from './OutfitScreen';
 import MyDeckScreen from './MyDeckScreen';
@@ -14,6 +15,23 @@ import SettingsScreen from './SettingsScreen';
 
 import styles from '../styles/Styles';
 import menuStyles from '../styles/menuStyles';
+
+const WorkoutNav = createStackNavigator({
+  Menu: { 
+    screen: WorkoutScreen,
+    navigationOptions: {
+      header: null
+    }
+  },
+  Build: { 
+    screen: BuildScreen,
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: '#59cbbd'
+      }
+    }
+  }
+})
 
 const MenuNav = createStackNavigator({
   Menu: { 
@@ -32,7 +50,7 @@ const MenuNav = createStackNavigator({
 
 export default createMaterialBottomTabNavigator({
   Workout: { 
-    screen: WorkoutScreen,
+    screen: WorkoutNav,
     navigationOptions: {
       tabBarIcon: ({tintColor}) => (
         <Icon name='fitness-center' color={tintColor} size={24} />

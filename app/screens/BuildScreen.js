@@ -349,19 +349,4 @@ class BuildScreen extends Component {
   }
 }
 
-const {height, width} = Dimensions.get('window');
-
-const options = {
-  container: {
-    padding: 5,
-    borderRadius: 5,
-    width: 280
-  },
-  text: {
-    fontSize: 40,
-    color: '#FFF',
-    marginLeft: 7,
-  }
-}
-
 export default BuildScreen;

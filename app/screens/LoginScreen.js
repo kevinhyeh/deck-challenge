@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, TouchableOpacity, Image, TextInput, Button, Alert } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, Image, TextInput, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
 import PasswordInputText from 'react-native-hide-show-password-input';
 
+import { _login } from '../services/FetchCalls';
+import EnterButton from '../components/EnterButton'
 import styles from '../styles/Styles';
 
 class LoginScreen extends Component {
@@ -15,21 +17,11 @@ class LoginScreen extends Component {
     }
   } 
 
-  loginIntoMysql = () => {
-    const { TextInputUsername } = this.state;
-    const { TextInputPassword } = this.state;
+  login = () => {
+    let username = this.state.TextInputUsername.toLowerCase();
+    let password = this.state.TextInputPassword.toLowerCase();
 
-    fetch('http://localhost:3001/login', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: TextInputUsername.toLowerCase(),
-        password: TextInputPassword.toLowerCase()
-      })
-    }).then(res => res.json())
+    return _login(username, password)
     .then(resultingJSON => {
       if (resultingJSON == 'No account found') {
         Alert.alert(resultingJSON);
@@ -43,13 +35,6 @@ class LoginScreen extends Component {
         this.props.navigation.navigate('Main');
       }
     });
-  }
-
-  login = () => {
-    this.loginIntoMysql();
-    {/*
-    this.props.navigation.navigate('Main');
-    */}
   }
 
   render() {
@@ -68,9 +53,9 @@ class LoginScreen extends Component {
           <TextInput style={[styles.input, {marginBottom: 0}]} placeholder="Username" placeholderTextColor="#4A6382" onChangeText={TextInputUsername => this.setState({TextInputUsername})} />
 
           <PasswordInputText style={styles.input} placeholder="Password" placeholderTextColor="#4A6382" onChangeText={TextInputPassword => this.setState({TextInputPassword})} />
-          <TouchableOpacity style={styles.button} onPress={() => this.login()}>
-          <Text style={styles.btnText}>Enter</Text>
-          </TouchableOpacity>
+
+          <EnterButton title={'Enter'} func={() => this.login()} />
+
           <Text style={styles.help}>Don't have an account? <Text style={styles.helpBtn} onPress={() => navigate('SignUp')}>Sign Up</Text>
           </Text> 
           </View>

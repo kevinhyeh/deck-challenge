@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, ScrollView, TouchableOpacity, Image, TextInput, Button } from 'react-native';
 import { Icon } from 'react-native-elements';
 
+import { _bestDeck } from '../services/FetchCalls';
 import styles from '../styles/Styles';
 
 class ProfileScreen extends Component {
@@ -18,16 +19,9 @@ class ProfileScreen extends Component {
   };
 
   loadBest = () => {
-    fetch('http://localhost:3001/bestDeck', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        user_id: this.props.screenProps.user_id
-      })
-    }).then(res => res.json())
+    const user_id = this.props.screenProps.user_id;
+
+    return _bestDeck(user_id)
     .then(resultingJSON => this.setState({ bestDeck: resultingJSON }))
   };
 

@@ -3,6 +3,7 @@ import { Text, View, ScrollView, TouchableOpacity, Image, TextInput, Button, Saf
 import { Icon } from 'react-native-elements';
 import cards from '../cards.json';
 
+import { _selectHistory, _updateFavorites} from '../services/FetchCalls';
 import styles from '../styles/WorkoutStyles';
 
 class HistoryScreen extends Component {
@@ -19,32 +20,16 @@ class HistoryScreen extends Component {
   };
 
   load = () => {
-    fetch('http://localhost:3001/selectHistory', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        user_id: this.props.screenProps.user_id
-      })
-    }).then(res => res.json())
+
+    const user_id = this.props.screenProps.user_id
+
+    return _selectHistory(user_id)
     .then(resultingJSON => this.setState({ workoutHistory : resultingJSON }))
   };
 
   toggleFavorite = (id, fav) => {
-    fetch('http://localhost:3001/updateFavorite', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        id: id,
-        favorite: fav
-      })
-    }).then(res => res.json())
-    this.props.navigation.navigate('MyDeck');
+    return _updateFavorites(id, fav)
+    .then(this.props.navigation.navigate('MyDeck'));
   };  
 
   render() {

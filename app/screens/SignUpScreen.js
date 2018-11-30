@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, TouchableOpacity, Image, TextInput, Button, Alert } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, Image, TextInput, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
 import PasswordInputText from 'react-native-hide-show-password-input';
 
+import { _signup } from '../services/FetchCalls';
+import EnterButton from '../components/EnterButton';
 import styles from '../styles/Styles';
 
 class SignUpScreen extends Component {
@@ -18,24 +20,12 @@ class SignUpScreen extends Component {
   } 
 
   insertIntoMysql = () => {
-    const { TextInputName } = this.state;
-    const { TextInputEmail } = this.state;
-    const { TextInputUsername } = this.state;
-    const { TextInputPassword } = this.state;
+    let user = this.state.TextInputName.toLowerCase();
+    let email = this.state.TextInputEmail.toLowerCase();
+    let username = this.state.TextInputUsername.toLowerCase();
+    let password = this.state.TextInputPassword.toLowerCase();
 
-    fetch('http://localhost:3001/signup', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        user: TextInputName.toLowerCase(), 
-        email: TextInputEmail.toLowerCase(),
-        username: TextInputUsername.toLowerCase(),
-        password: TextInputPassword.toLowerCase()
-      })
-    }).then(res => res.json())
+    return _signup(user, email, username, password)
     .then(resultingJSON => {
       if (resultingJSON == 'Email already used') {
         Alert.alert(resultingJSON);
@@ -49,7 +39,6 @@ class SignUpScreen extends Component {
   }
 
   navLoginScreen = () => {
-
     const { TextInputName } = this.state;
     const { TextInputEmail } = this.state;
     const { TextInputUsername } = this.state;
@@ -77,7 +66,7 @@ class SignUpScreen extends Component {
 
           <Text style={styles.header}>Register</Text>
 
-          <TextInput style={styles.input} returnKeyType={ 'next' } placeholder="Your Name" placeholderTextColor="#4A6382" onChangeText={TextInputName => this.setState({TextInputName})} />
+          <TextInput style={styles.input} placeholder="Your Name" placeholderTextColor="#4A6382" onChangeText={TextInputName => this.setState({TextInputName})} />
 
           <TextInput style={styles.input} placeholder="Your Email" placeholderTextColor="#4A6382" onChangeText={TextInputEmail => this.setState({TextInputEmail})} />
 
@@ -85,9 +74,7 @@ class SignUpScreen extends Component {
 
           <PasswordInputText style={styles.input} placeholder="Password" placeholderTextColor="#4A6382" onChangeText={TextInputPassword => this.setState({TextInputPassword})} />
 
-          <TouchableOpacity style={styles.button} onPress={this.navLoginScreen}>
-          <Text style={styles.btnText}>Sign Up</Text>
-          </TouchableOpacity>
+          <EnterButton title={'SignUp'} func={this.navLoginScreen} />
 
           <Text style={styles.help}>Already have an account?{this.props.navigation.state.params} <Text style={styles.helpBtn} onPress={() => navigate('Login')}>Login</Text>
           </Text> 

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Text, View, ScrollView, TouchableOpacity, ImageBackground, TextInput, Button, SafeAreaView, Alert, Modal, Dimensions } from 'react-native';
-import { Icon } from 'react-native-elements';
 
-import TimerExit from '../components/deck_timer_exit';
-import FinishScreen from '../components/deck_finishScreen';
+import { _loadWorkouts, _addHistory } from '../services/FetchCalls';
+import TimerExit from '../components/TimerExit';
+import FinishScreen from '../components/FinishScreen';
 
 import styles from '../styles/WorkoutStyles';
 import cards from '../cards.json';
@@ -28,35 +28,26 @@ class BuildScreen extends Component {
       shuffledDeck: [],
       secondsElapsed: 0,
       finishedCount: 0,
-      deckCompleted: true
+      deckCompleted: true,
+      favorite: null
     };
     this.incrementer = null;
     this.initialState = this.state;
   };
 
   fetchWorkouts = () => {
-    fetch('http://localhost:3001/workouts', {
-      method: 'POST'
-    }).then(res => res.json())
-    .then(resultingJSON => this.setState({ initialWorkouts : resultingJSON }))
+    return _loadWorkouts().then(resultingJSON => this.setState({ initialWorkouts : resultingJSON }))
   };
 
   fecthFinishWorkout = () => {
-    fetch('http://localhost:3001/addHistory', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        timer: formattedSeconds(this.state.secondsElapsed), 
-        difficulty: this.state.selectDifficulty,
-        chosenWorkouts: this.state.chosenWorkouts.join(', '),
-        deckCompleted: this.state.deckCompleted,
-        favorite: this.state.favorite,
-        user_id: this.props.screenProps.user_id
-      })
-    }).then(res => res.json())
+    let timer = formattedSeconds(this.state.secondsElapsed);
+    let difficulty = this.state.selectDifficulty;
+    let chosenWorkouts = this.state.chosenWorkouts.join(', ');
+    let deckCompleted = this.state.deckCompleted;
+    let favorite = this.state.favorite;
+    let user_id = this.props.screenProps.user_id;
+
+    return _addHistory(timer, difficulty, chosenWorkouts, deckCompleted, favorite, user_id);
   }
 
   loadWorkouts = (num) => {
@@ -74,23 +65,17 @@ class BuildScreen extends Component {
     this.setState({ modalVisibility: visible })
   };
 
-  shuffleHalf = (a) => {
+  shuffleDeck = (a) => {
     let aCopy = a.slice(0);
     for (let i = aCopy.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [aCopy[i], aCopy[j]] = [aCopy[j], aCopy[i]];
     }
-    this.setState({shuffledDeck: aCopy.splice(26, 27)});
-    this.handleStartClick();
-  };
-
-  shuffleFull = (a) => {
-    let aCopy = a.slice(0);
-    for (let i = aCopy.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [aCopy[i], aCopy[j]] = [aCopy[j], aCopy[i]];
+    if (this.state.selectDifficulty == 26) {
+      this.setState({shuffledDeck: aCopy.splice(26, 27)});
+    } else {
+      this.setState({shuffledDeck: aCopy});
     }
-    this.setState({shuffledDeck: aCopy});
     this.handleStartClick();
   };
 
@@ -127,7 +112,6 @@ class BuildScreen extends Component {
     this.setModalVisibility(false);
     this.handleStopClick();
     this.setState({ deckCompleted: false });
-    this.fecthFinishWorkout();
     this.resetState();
   };
 
@@ -140,6 +124,10 @@ class BuildScreen extends Component {
     this.fecthFinishWorkout();
     this.resetState();
   };
+
+  setFavorite = (fav) => {
+    this.setState({ favorite: fav });
+  }
 
   render() {
     const { selectDifficulty, selectNumber, selectWorkouts, chosenWorkouts } = this.state;
@@ -176,7 +164,7 @@ class BuildScreen extends Component {
 
     const pickedQuote = quotes[Math.floor(Math.random() * quotes.length - 1)];
 
-     if (this.state.finishedCount == this.state.selectDifficulty) {
+    if (this.state.finishedCount == this.state.selectDifficulty) {
       this.handleStopClick();
     }
 
@@ -280,14 +268,9 @@ class BuildScreen extends Component {
                 <Text style={{ color: '#fff', fontSize: 24, fontFamily: 'AvenirNext-Heavy' }}>- {pickedQuote.author}</Text>
               */}
                 </ImageBackground>
-                { this.state.selectDifficulty == 26 ?
-                  <TouchableOpacity style={[styles.shuffleBut, {marginTop: 50}]} onPress={() => this.shuffleHalf(cards)}>
-                  <Text style={{color: '#fff', fontSize: 24 }} onPress={() => this.shuffleHalf(cards)}>Start Workout</Text>
+                  <TouchableOpacity style={[styles.shuffleBut, {marginTop: 50}]} onPress={() => this.shuffleDeck(cards)}>
+                  <Text style={{color: '#fff', fontSize: 24 }}>Start Workout</Text>
                   </TouchableOpacity>
-                : <TouchableOpacity style={[styles.shuffleBut, {marginTop: 50}]} onPress={() => this.shuffleFull(cards)}>
-                  <Text style={{color: '#fff', fontSize: 24 }} onPress={() => this.shuffleFull(cards)}>Start Workout</Text>
-                  </TouchableOpacity>
-                }
                 </View>
               }
             </View>

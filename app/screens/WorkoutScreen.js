@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Text, View, ScrollView, TouchableOpacity, ImageBackground, TextInput, Button, SafeAreaView, Alert, Modal, Dimensions } from 'react-native';
 import { Icon } from 'react-native-elements';
 
-import InstructionsModal from '../components/modal_instructions';
+import { _stats } from '../services/FetchCalls';
+import InstructionsModal from '../components/InstructionsModal';
 import Character from '../components/Character';
 
 import styles from '../styles/WorkoutStyles';
@@ -25,16 +26,9 @@ class WorkoutScreen extends Component {
   };
 
   loadStats = () => {
-    fetch('http://localhost:3001/stats', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        user_id: this.props.screenProps.user_id
-      })
-    }).then(res => res.json())
+    let user_id = this.props.screenProps.user_id
+
+    return _stats(user_id)
     .then(resultingJSON => this.setState({
       decksCreated: resultingJSON.created,
       decksCompleted: resultingJSON.completed

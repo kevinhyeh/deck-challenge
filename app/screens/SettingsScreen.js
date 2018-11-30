@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, ScrollView, TouchableOpacity, Image, TextInput, Button, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
 
+import { _loadWorkouts, _addWorkout } from '../services/FetchCalls';
 import workoutStyles from '../styles/WorkoutStyles';
 import styles from '../styles/Styles';
 
@@ -20,23 +21,14 @@ class SettingsScreen extends Component {
   };
 
   fetchWorkouts = () => {
-    fetch('http://localhost:3001/workouts', {
-      method: 'POST'
-    }).then(res => res.json())
+    return _loadWorkouts()
     .then(resultingJSON => this.setState({ workouts : resultingJSON }))
   };
 
   fetchAddWorkout = () => {
-    fetch('http://localhost:3001/addWorkout', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        addWorkout: this.state.addWorkout
-      })
-    }).then(res => res.json())
+    const addWorkout = this.state.addWorkout;
+
+    return _addWorkout(addWorkout)
     .then(resultingJSON => {
       if (resultingJSON == 'Workout already exists') {
         Alert.alert(resultingJSON);

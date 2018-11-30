@@ -3,6 +3,8 @@ import { Text, View, ScrollView, TouchableOpacity, Image, TextInput, Button, Saf
 import { Icon } from 'react-native-elements';
 import cards from '../cards.json';
 
+import { _selectFavorites, _toggleFavorites } from '../services/FetchCalls';
+import HistoryCard from '../components/HistoryCard';
 import styles from '../styles/WorkoutStyles';
 
 class MyDeckScreen extends Component {
@@ -19,72 +21,26 @@ class MyDeckScreen extends Component {
   };
 
   load = () => {
-    fetch('http://localhost:3001/selectFavorites', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        user_id: this.props.screenProps.user_id
-      })
-    }).then(res => res.json())
+    let user_id = this.props.screenProps.user_id;
+
+    return _selectFavorites(user_id)
     .then(resultingJSON => this.setState({ favorites : resultingJSON }))
   };
 
   toggleFavorite = (id, fav) => {
-    fetch('http://localhost:3001/updateFavorite', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        id: id,
-        favorite: fav
-      })
-    }).then(res => res.json())
-    this.props.navigation.navigate('History');
+    return _toggleFavorites(id, fav)
+    .then(this.props.navigation.navigate('History'));
   };  
 
 
   render() {
 
     const favorites = this.state.favorites.map(workout => {
-      return <View key={workout.id} style={{ 
-        width: 300, 
-        height: 450, 
-        backgroundColor: workout.deck_completed ? '#F2FFF1' : '#FFF6ED', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        marginTop: 20, 
-        borderRadius: 20, 
-        borderWidth: 6, 
-        paddingLeft: 7,
-        paddingRight: 7,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 0},
-        shadowOpacity: 0.6,
-        shadowRadius: 20,
-        borderColor: workout.deck_completed ? '#40E55D' : 'red' }}>
-        { workout.deck_completed == 1 ? 
-          <Text style={{ fontSize: 40, color: '#40E55D', marginBottom: 30 }}>Completed</Text>
-        : <Text style={{ fontSize: 40, color: 'red', marginBottom: 30 }}>Incompleted</Text>
-        }
-        <Text style={{ fontSize: 18, marginBottom: 5 }}>Date: {workout.date_completed.split('T')[0]}</Text>
-        <Text style={{ fontSize: 18, marginBottom: 5 }}>--------------------</Text>
-        <Text style={{ fontSize: 18, marginBottom: 5 }}>Time: {workout.timer}</Text>
-        <Text style={{ fontSize: 18, marginBottom: 5 }}>--------------------</Text>
-        <Text style={{ fontSize: 18, marginBottom: 5 }}>Difficulty: {workout.difficulty} {workout.difficulty == 26 ? '(Easy)': '(Hard)'}</Text>
-        <Text style={{ fontSize: 18, marginBottom: 5 }}>--------------------</Text>
-        <Text style={{ fontSize: 18, marginBottom: 5 }}>Chosen Workouts:</Text>
-        <Text style={{ fontSize: 18, marginBottom: 5 }}>{workout.chosen_workouts}</Text>
-        <Text onPress={() => this.toggleFavorite(workout.id, false)} style={{ fontSize: 60, color: workout.deck_completed ? '#40E55D' : 'red' }}>&#9829;</Text>
-      </View>
+      return <HistoryCard key={workout.id} id={workout.id} deck_completed={workout.deck_completed} difficulty={workout.difficulty} chosen_workouts={workout.chosen_workouts} date_completed={workout.date_completed} toggleFavFunc={() => this.toggleFavorite(workout.id, false)} timer={workout.timer} />
     });
     
     return (
-      <ScrollView style={{ backgroundColor: '#4A6382' }}contentInsetAdjustmentBehavior="automatic">
+      <ScrollView style={{ backgroundColor: '#4A6382' }} contentInsetAdjustmentBehavior="automatic">
         <SafeAreaView style={{ alignItems: 'center' }}>
         { this.state.favorites.length > 0 ?
           [favorites]

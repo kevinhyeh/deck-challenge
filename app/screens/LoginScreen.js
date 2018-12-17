@@ -50,7 +50,7 @@ class LoginScreen extends Component {
 
           <Text style={styles.header}>Welcome</Text>
 
-          <TextInput style={[styles.input, {marginBottom: 0}]} placeholder="Username" placeholderTextColor="#4A6382" onChangeText={TextInputUsername => this.setState({TextInputUsername})} />
+          <TextInput style={styles.input} placeholder="Username" placeholderTextColor="#4A6382" onChangeText={TextInputUsername => this.setState({TextInputUsername})} />
 
           <PasswordInputText style={styles.input} placeholder="Password" placeholderTextColor="#4A6382" onChangeText={TextInputPassword => this.setState({TextInputPassword})} />
 

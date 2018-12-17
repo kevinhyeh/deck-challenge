@@ -1,5 +1,7 @@
+const address = '192.168.1.72:3001'
+
 export const _login = (username, password) => {
-  return fetch('http://192.168.1.72:3001/login', {
+  return fetch('http://' + address + '/login', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -13,7 +15,7 @@ export const _login = (username, password) => {
 }
 
 export const _signup = (user, email, username, password) => {
-  return fetch('http://192.168.1.72:3001/signup', {
+  return fetch('http://' + address + '/signup', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -29,13 +31,13 @@ export const _signup = (user, email, username, password) => {
 }
 
 export const _loadWorkouts = () => {
-  return fetch('http://192.168.1.72:3001/workouts', {
+  return fetch('http://' + address + '/workouts', {
       method: 'POST'
     }).then(res => res.json())
 }
 
 export const _addWorkout = (addWorkout) => {
-  return fetch('http://192.168.1.72:3001/addWorkout', {
+  return fetch('http://' + address + '/addWorkout', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -48,7 +50,7 @@ export const _addWorkout = (addWorkout) => {
 }
 
 export const _addHistory = (timer, difficulty, chosenWorkouts, deckCompleted, favorite, user_id) => {
-  return fetch('http://192.168.1.72:3001/addHistory', {
+  return fetch('http://' + address + '/addHistory', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -66,7 +68,7 @@ export const _addHistory = (timer, difficulty, chosenWorkouts, deckCompleted, fa
 }
 
 export const _selectHistory = (user_id) => {
-  return fetch('http://192.168.1.72:3001/selectHistory', {
+  return fetch('http://' + address + '/selectHistory', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -79,7 +81,7 @@ export const _selectHistory = (user_id) => {
 }
 
 export const _stats = (user_id) => {
-  return fetch('http://192.168.1.72:3001/stats', {
+  return fetch('http://' + address + '/stats', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -92,7 +94,7 @@ export const _stats = (user_id) => {
 }
 
 export const _selectFavorites = (user_id) => {
-  return fetch('http://192.168.1.72:3001/selectFavorites', {
+  return fetch('http://' + address + '/selectFavorites', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -105,7 +107,7 @@ export const _selectFavorites = (user_id) => {
 }
 
 export const _updateFavorites = (id, fav) => {
-  return fetch('http://192.168.1.72:3001/updateFavorite', {
+  return fetch('http://' + address + '/updateFavorite', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -119,7 +121,7 @@ export const _updateFavorites = (id, fav) => {
 }
 
 export const _toggleFavorites = (id, fav) => {
-  return fetch('http://192.168.1.72:3001/updateFavorite', {
+  return fetch('http://' + address + '/updateFavorite', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -133,7 +135,7 @@ export const _toggleFavorites = (id, fav) => {
 }
 
 export const _bestDeck = (user_id) => {
-  return fetch('http://192.168.1.72:3001/bestDeck', {
+  return fetch('http://' + address + '/bestDeck', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
